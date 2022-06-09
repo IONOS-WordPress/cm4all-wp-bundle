@@ -1,0 +1,32 @@
+{
+  "name": "wp-esbuild-bundler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.3",
+    "pnpm": ">=7"
+  },
+  "type": "module",
+  "scripts": {
+    "postinstall": "npx -y only-allow pnpm",
+    "version": "node --version",
+    "test": "node --trace-warnings --test",
+    "start": "bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=production --mode=production --expose:\"foo.js\"=wp.foo \"foo.js\""
+  },
+  "bin": {
+    "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "esbuild": "^0.14.42",
+    "sass": "^1.52.2",
+    "yaml": "^2.1.1"
+  },
+  "devDependencies": {
+    "@wordpress/icons": "^9.1.0",
+    "debug": "^4.3.4"
+  }
+}

@@ -1,0 +1,9 @@
+verbose: true
+mode: development
+export:foo.js: wp.foo
+banner:css: |
+  this is the css banner
+  prepended to each generated css file
+banner:js: |
+  this is the banner prepended to each
+  generated js file
