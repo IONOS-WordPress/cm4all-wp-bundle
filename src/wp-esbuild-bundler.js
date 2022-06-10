@@ -31,7 +31,7 @@ export default async function bundle(options) {
     minify: options.mode !== "development",
     sourcemap: options.mode === "development" ? "inline" : false,
     metafile: true,
-    plugins: [SassPlugin()],
+    plugins: [SassPlugin(options.sass)],
     watch: options.watch,
   };
 

@@ -1,9 +1,18 @@
 import sass from "sass";
 import package_json from "./../../package.json" assert { type: "json" };
-import { resolve, dirname } from "node:path";
+import { resolve, dirname, relative } from "node:path";
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
-export default function SassPlugin() {
+/**
+ * Sass plugin for esbuild.
+ *
+ * Options will be 1:1 mapped to the original sass options.
+ * @see https://sass-lang.com/documentation/js-api/interfaces/Options
+ *
+ * @param   {[type]}  sassOptions
+ */
+export default function SassPlugin(options = {}) {
   const name = package_json.name + "-sass-plugin";
   return {
     name,
@@ -15,21 +24,28 @@ export default function SassPlugin() {
       build.onLoad({ filter: /.*/, namespace: name }, (args) => {
         const esbuildOptions = build.initialOptions;
 
-        const { css, loadedUrls } = sass.compileString(
+        /*
+         * Please note that Sass options "sourceMap" and "sourceMapIncludeSources"
+         * will be correctly handled by Sass itself BUT the resulting sourcemap gets completely ignored.
+         * Instead the esbuild sourcemap (generated based on the Sass css output) gets returned.
+         *
+         * In future releases this may be changed (like this: https://github.com/glromeo/esbuild-sass-plugin/blob/main/src/render.ts)
+         */
+        const sassOptions = {
+          loadPaths: [dirname(args.path)],
+          style: esbuildOptions.minify ? "compressed" : "expanded",
+          sourceMap: !!esbuildOptions.sourcemap,
+          sourceMapIncludeSources: !!esbuildOptions.sourcemap,
+
+          ...options,
+        };
+
+        const { css, loadedUrls, sourceMap } = sass.compileString(
           readFileSync(args.path, "utf8"),
-          {
-            loadPaths: [dirname(args.path)],
-
-            // see options here : https://sass-lang.com/documentation/js-api#options
-            // includePaths: ["node_modules/breakpoint-sass/stylesheets"],
-
-            outputStyle: esbuildOptions.minify ? "compressed" : "expanded",
-            sourceMap: esbuildOptions.sourcemap,
-            sourceComments: esbuildOptions.sourcemap,
-            sourceMapContents: esbuildOptions.sourcemap,
-            sourceMapEmbed: esbuildOptions.sourcemap,
-          },
+          sassOptions,
         );
+
+        const contents = css.toString("utf-8");
 
         // if esbuild watch is enabled :
         // collect all files included by sass into watchFiles
@@ -42,7 +58,7 @@ export default function SassPlugin() {
         ];
 
         return {
-          contents: css.toString("utf-8"),
+          contents,
           // watchFiles : see https://github.com/glromeo/esbuild-sass-plugin/blob/9759a6ff4b698acd7126b7237a10ff549b43389b/src/plugin.ts#L86
           watchFiles,
           loader: "css",

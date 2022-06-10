@@ -12,7 +12,7 @@
     "postinstall": "npx -y only-allow pnpm",
     "version": "node --version",
     "test": "node --trace-warnings --test",
-    "start": "bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=production --mode=production --expose:\"foo.js\"=wp.foo \"foo.js\""
+    "start": "bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=production --expose:\"foo.js\"=wp.foo \"foo.js\""
   },
   "bin": {
     "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"

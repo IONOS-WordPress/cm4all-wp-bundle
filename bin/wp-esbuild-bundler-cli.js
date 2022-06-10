@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S NODE_NO_WARNINGS=1 node
 
 import { cwd } from "node:process";
 import { parseArgs, inspect } from "node:util";
@@ -52,6 +52,7 @@ const options = {
   banner: extractPrefixedOptions(args.values, "banner:"),
   footer: extractPrefixedOptions(args.values, "footer:"),
   watch: args.values.watch,
+  sass: {},
 };
 
 console.log("options = %s", JSON.stringify(options, null, 2));
