@@ -43,18 +43,21 @@ const args = parseArgs(ARGS);
 
 console.log("args = %s", JSON.stringify(args, null, 2));
 
+const expose = extractPrefixedOptions(args.values, "expose:");
 const options = {
   verbose: args.values.verbose,
   mode: args.values.mode === "development" ? "development" : "production",
-  entryPoints: args.positionals,
+  // use both positional arguments and expose option keys as entryPoints
+  entryPoints: [...new Set([...Object.keys(expose), ...args.positionals])],
   outdir: args.values.outdir ?? cwd(),
-  expose: extractPrefixedOptions(args.values, "expose:"),
+  expose,
   banner: extractPrefixedOptions(args.values, "banner:"),
   footer: extractPrefixedOptions(args.values, "footer:"),
   watch: args.values.watch,
   sass: {},
 };
 
+debugger
 console.log("options = %s", JSON.stringify(options, null, 2));
 
 await bundle(options);
