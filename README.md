@@ -4,9 +4,7 @@
 
 - enable corepack : `corepack enable`
 
-- install a specfic (=> latest) version of corepack wwithin your project : `corepack prepare pnpm@7.11.0 --activate`
-
-- use the installed pnp version using `corepack pnpm ...`
+- install dependencies : `corepack pnpm install`
 
 ## debugging
 

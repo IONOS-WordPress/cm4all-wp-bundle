@@ -7,25 +7,28 @@
     "node": ">=18.3",
     "pnpm": ">=7.11"
   },
+  "packageManager": "pnpm@7.11.0",
   "type": "module",
   "scripts": {
     "postinstall": "npx -y only-allow pnpm",
     "version": "node --version",
     "test": "node --trace-warnings --test test/test-*.js",
-    "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=production --expose:\"figure.js\"=wp.figure \"figure.js\"",
+    "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --expose:\"test/fixtures/wordpress/figure.js\"=wp.figure \"test/fixtures/wordpress/figure.js\"",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --"
   },
   "bin": {
     "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["wordpress", "esbuild", "gutenberg", "cli", "transpiler"],
+  "author": {
+    "email": "lars.gersmann@gmail.com",
+    "name": "lars gersmann"
+  },
   "license": "ISC",
   "dependencies": {
-    "esbuild": "^0.14.42",
+    "esbuild": "^0.15.7",
     "ndb": "1.1.5",
-    "sass": "^1.52.2",
-    "yaml": "^2.1.1"
+    "sass": "^1.54.8"
   },
   "devDependencies": {
     "@wordpress/icons": "^9.1.0",
