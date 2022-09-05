@@ -1,3 +1,27 @@
+# Development
+
+- ensure you have NodeJS > v16.13 installed (example using nvm: `nvm install v16.13`). 
+
+- enable corepack : `corepack enable`
+
+- install a specfic (=> latest) version of corepack wwithin your project : `corepack prepare pnpm@7.11.0 --activate`
+
+- use the installed pnp version using `corepack pnpm ...`
+
+## debugging
+
+debugging can be done using `ndb` wrapped in the package.json `debug` script: 
+
+Examples: 
+
+```
+// debug the code runned during package.json "test" script
+corepack pnpm run debug test
+
+// debug the code runned during package.json "start" script
+corepack pnpm run debug start
+```
+
 # Usage
 
 ## CLI

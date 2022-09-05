@@ -5,14 +5,15 @@
   "main": "index.js",
   "engines": {
     "node": ">=18.3",
-    "pnpm": ">=7"
+    "pnpm": ">=7.11"
   },
   "type": "module",
   "scripts": {
     "postinstall": "npx -y only-allow pnpm",
     "version": "node --version",
-    "test": "node --trace-warnings --test",
-    "start": "bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=production --expose:\"foo.js\"=wp.foo \"foo.js\""
+    "test": "node --trace-warnings --test test/test-*.js",
+    "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=production --expose:\"figure.js\"=wp.figure \"figure.js\"",
+    "debug": "NODE_NO_WARNINGS=1 ndb npm run --"
   },
   "bin": {
     "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
@@ -22,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "esbuild": "^0.14.42",
+    "ndb": "1.1.5",
     "sass": "^1.52.2",
     "yaml": "^2.1.1"
   },
