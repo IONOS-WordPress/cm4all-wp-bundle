@@ -1,4 +1,5 @@
 import esbuild from "esbuild";
+import ExposePlugin from "./plugins/expose.js";
 import SassPlugin from "./plugins/sass.js";
 
 export default async function bundle(options) {
@@ -31,7 +32,7 @@ export default async function bundle(options) {
     minify: options.mode !== "development",
     sourcemap: options.mode === "development" ? "inline" : false,
     metafile: true,
-    plugins: [SassPlugin(options.sass)],
+    plugins: [SassPlugin(options.sass), ExposePlugin(options.expose)],
     watch: options.watch,
   };
 

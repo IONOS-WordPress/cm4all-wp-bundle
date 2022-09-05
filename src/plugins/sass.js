@@ -1,8 +1,7 @@
 import sass from "sass";
 import package_json from "./../../package.json" assert { type: "json" };
-import { resolve, dirname, relative } from "node:path";
+import { resolve, dirname } from "node:path";
 import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 
 /**
  * Sass plugin for esbuild.

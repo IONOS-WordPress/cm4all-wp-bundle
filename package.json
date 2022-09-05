@@ -13,7 +13,7 @@
     "postinstall": "npx -y only-allow pnpm",
     "version": "node --version",
     "test": "node --test test/test-*.js",
-    "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --expose:\"test/fixtures/wordpress/figure.js\"=wp.figure",
+    "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --expose:\"/home/lgersman/workspace/wp-esbuild-bundler/test/fixtures/wordpress/figure.js\"=wp.figure",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --"
   },
   "bin": {

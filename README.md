@@ -8,18 +8,29 @@
 
 ## debugging
 
-debugging can be done using `ndb` wrapped in the package.json `debug` script: 
+- *using `ndb` wrapped in the package.json `debug` script: 
 
-Examples: 
+  - set some breakpoints in your cod using the `debugger` statement
 
-```
-// debug the code runned during package.json "test" script
-corepack pnpm run debug test
+  Examples: 
 
-// debug the code runned during package.json "start" script
-corepack pnpm run debug start
-```
+  ```
+  // debug the code runned during package.json "test" script
+  corepack pnpm run debug test
 
+  // debug the code runned during package.json "start" script
+  corepack pnpm run debug start
+  ```
+
+- using vscode's integrated javascript debug terminal: 
+
+  - open a javascript debug terminal : (CTRL-SHIFT-P) `Debug: Javascript Debug Terminal`
+
+  - ensure a `corepack` enabled nodejs version is active (using `nvm use v16.13.0` for example)
+
+  - set some breakpoints in source files
+
+  - execute the script to debug in the Javascript Debug Terminal (Example : `corepack pnpm start`)
 # Usage
 
 ## CLI

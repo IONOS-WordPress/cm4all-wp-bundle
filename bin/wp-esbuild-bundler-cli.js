@@ -44,6 +44,7 @@ const args = parseArgs(ARGS);
 console.log("args = %s", JSON.stringify(args, null, 2));
 
 const expose = extractPrefixedOptions(args.values, "expose:");
+
 const options = {
   verbose: args.values.verbose,
   mode: args.values.mode === "development" ? "development" : "production",
@@ -57,7 +58,6 @@ const options = {
   sass: {},
 };
 
-debugger
 console.log("options = %s", JSON.stringify(options, null, 2));
 
 await bundle(options);
