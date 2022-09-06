@@ -12,7 +12,7 @@
   "scripts": {
     "postinstall": "npx -y only-allow pnpm",
     "version": "node --version",
-    "test": "node --test test/test-*.js",
+    "test": "NODE_NO_WARNINGS=1 node --test test/test-*.js",
     "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --global:\"./mylib.js\"=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --"
   },
@@ -39,14 +39,15 @@
   "devDependencies": {
     "@wordpress/components": "20.0.0",
     "@wordpress/icons": "^9.1.0",
-    "debug": "^4.3.4"
+    "debug": "^4.3.4",
+    "playwright": "1.25.1"
   },
   "peerDependencies": {
     "@wordpress/components": "20.0.0",
+    "@wordpress/element": "^4.14.0",
     "@wordpress/icons": "^9.7.0",
     "@wordpress/primitives": "^3.14.0",
-    "@wordpress/element": "^4.14.0",
-    "react": "17.0.0",
-    "react-dom": "17.0.0"
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   }
 }
