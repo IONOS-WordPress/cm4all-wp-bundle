@@ -13,13 +13,19 @@
     "postinstall": "npx -y only-allow pnpm",
     "version": "node --version",
     "test": "node --test test/test-*.js",
-    "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --expose:\"/home/lgersman/workspace/wp-esbuild-bundler/test/fixtures/wordpress/figure.js\"=wp.figure",
+    "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --global:\"./mylib.js\"=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --"
   },
   "bin": {
     "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
   },
-  "keywords": ["wordpress", "esbuild", "gutenberg", "cli", "transpiler"],
+  "keywords": [
+    "wordpress",
+    "esbuild",
+    "gutenberg",
+    "cli",
+    "transpiler"
+  ],
   "author": {
     "email": "lars.gersmann@gmail.com",
     "name": "lars gersmann"
@@ -31,7 +37,16 @@
     "sass": "^1.54.8"
   },
   "devDependencies": {
+    "@wordpress/components": "20.0.0",
     "@wordpress/icons": "^9.1.0",
     "debug": "^4.3.4"
+  },
+  "peerDependencies": {
+    "@wordpress/components": "20.0.0",
+    "@wordpress/icons": "^9.7.0",
+    "@wordpress/primitives": "^3.14.0",
+    "@wordpress/element": "^4.14.0",
+    "react": "17.0.0",
+    "react-dom": "17.0.0"
   }
 }
