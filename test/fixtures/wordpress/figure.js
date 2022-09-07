@@ -9,6 +9,7 @@ import settings from "./figure.json" assert { type: "json" };
 import "./figure.scss";
 
 import * as mylib from './mylib.js';
+
 import { foo, bar } from './mylib.js';
 
 import FigCaption from "./figcaption.js";

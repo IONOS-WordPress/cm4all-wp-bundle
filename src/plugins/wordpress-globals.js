@@ -1,6 +1,6 @@
 import package_json from "../../package.json" assert { type: "json" };
 import esbuild from "esbuild";
-import { resolve, dirname, extname } from "node:path";
+import { resolve, dirname, extname, join, normalize } from "node:path";
 import { readFile } from "node:fs/promises";
 
 const DEFAULT_WORDPRESS_GLOBALS = {
@@ -64,16 +64,29 @@ export default function ExposePlugin(
       const filesToFilter = Object.keys(globals).map(fileToFilter => fileToFilter.replace(/[^A-Za-z0-9_]/g, '\\$&'));
       const filter = new RegExp(`^(${filesToFilter.join("|")})$`);
 
-      build.onResolve({ filter }, (args) => {
+      build.onResolve({ filter }, async (args) => {
+        const retval = { path: args.path, };
+      
         // delegate to our onLoad callback if the module is mapped to a global variable
-        return { path: args.path, namespace: !!globals[args.path] ? name : args.namespace};
+        if(!!globals[args.path]) {
+          retval.namespace = name;
+          if(args.path.startsWith('.')) {
+            retval.pluginData = {
+              path : normalize(join( args.resolveDir, args.path)),
+              errors : [],
+            }  
+          }
+        } else {
+          retval.namespace = args.namespace;
+        }
+        return retval;
       });
       build.onLoad({ filter: /.*/, namespace: name }, async (args) => {
         const source = [`export default ${globals[args.path]};`];
 
         // try to evaluate the named exports
         try {
-          const result = await build.resolve(args.path);
+          const result = args.pluginData || await build.resolve(args.path);
           if (result.errors.length == 0) {
             const module = await import(result.path);
 
@@ -86,9 +99,10 @@ export default function ExposePlugin(
 
             source.push(`export const { ${exports} } = ${globals[args.path]};`);
           }
-        } catch(ex) {
-          console.log(ex);
-        }
+        } catch {}
+        // } catch(ex) {
+        //   console.log(ex);
+        // }
 
         return {
           contents : source.join('\n'),

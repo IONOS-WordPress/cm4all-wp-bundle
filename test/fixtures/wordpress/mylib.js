@@ -1,13 +1,17 @@
-function foo() {
+export function foo() {
   console.log('foo');
 }
 
-function bar() {
+export function bar() {
   console.log('bar');
+  // that will doesnt work 
+  // return (<bar></bar>);
 }
 
-window.my ??= {};
-window.my.lib = {
-  foo,
-  bar
-};
+if (typeof window !== 'undefined') {
+  window.my ??= {};
+  window.my.lib = {
+    foo,
+    bar
+  };
+}
