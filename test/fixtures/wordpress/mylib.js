@@ -9,8 +9,7 @@ export function bar() {
 }
 
 if (typeof window !== 'undefined') {
-  window.my ??= {};
-  window.my.lib = {
+  ((window.wp ||= {}).my ||= {}).lib = {
     foo,
     bar
   };

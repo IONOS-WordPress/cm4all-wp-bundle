@@ -6,7 +6,6 @@ import { readFile } from "node:fs/promises";
 const DEFAULT_WORDPRESS_GLOBALS = {
   '@wordpress/a11y' : 'window.wp.a11y',
   '@wordpress/api-fetch' : 'window.wp.apiFetch', 
-  '@wordpress/api-request' : 'window.wp.apiRequest', 
   '@wordpress/autop' : 'window.wp.autop', 
   '@wordpress/blob' : 'window.wp.blob', 
   '@wordpress/block-editor' :'window.wp.blockEditor', 

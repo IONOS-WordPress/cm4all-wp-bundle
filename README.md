@@ -31,6 +31,10 @@
   - set some breakpoints in source files
 
   - execute the script to debug in the Javascript Debug Terminal (Example : `corepack pnpm start`)
+
+### debugging tests
+
+executing `PWDEBUG=1 corepack pnpm test` will open up the playwright debugger
 # Usage
 
 ## CLI

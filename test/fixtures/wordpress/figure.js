@@ -33,4 +33,3 @@ export function Figure({ src, caption }) {
 export default function foobar() {
   console.log("huhu");
 }
-

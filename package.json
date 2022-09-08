@@ -14,6 +14,7 @@
     "version": "node --version",
     "test": "NODE_NO_WARNINGS=1 node --test test/test-*.js",
     "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --global:\"./mylib.js\"=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
+    "bundle-gutenberg-stub" : "esbuild test/fixtures/wordpress/gutenberg-stub.js --bundle --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\\\"development\\\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=test/fixtures/wordpress/build/gutenberg-stub.js",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --"
   },
   "bin": {
@@ -37,16 +38,26 @@
     "sass": "^1.54.8"
   },
   "devDependencies": {
-    "@wordpress/components": "20.0.0",
-    "@wordpress/icons": "^9.1.0",
     "debug": "^4.3.4",
     "playwright": "1.25.1"
   },
-  "peerDependencies": {
-    "@wordpress/components": "20.0.0",
+  "peerDependencies": {    
     "@wordpress/element": "^4.14.0",
     "@wordpress/icons": "^9.7.0",
-    "@wordpress/primitives": "^3.14.0",
+    "@wordpress/primitives": "^3.14.0"
+  },
+  "devDependencies" : {
+    "@wordpress/components": "20.0.0",
+    "@wordpress/api-fetch":"6.13.0",
+    "@wordpress/autop":"3.16.0",
+    "@wordpress/blob":"3.16.0",
+    "@wordpress/block-editor":"9.8.0",
+    "@wordpress/block-library":"7.13.0",
+    "@wordpress/edit-post":"6.13.0",
+    "@wordpress/format-library":"3.14.0",
+    "@wordpress/media-utils":"4.7.0",
+    "@wordpress/plugins":"4.14.0",
+    "@wordpress/preferences-persistence":"1.8.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   }

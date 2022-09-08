@@ -6,7 +6,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 describe('test in browser', () => {
-  const TEMPLATE_PAGE_URL = pathToFileURL(resolve('./test/fixtures/wordpress/playwright-template.html')).href;
+  const TEMPLATE_PAGE_URL = pathToFileURL(resolve('./test/fixtures/wordpress/gutenberg-stub.html')).href;
 
   let browser, page;
   
@@ -15,17 +15,22 @@ describe('test in browser', () => {
   beforeEach(async () => {
     page = await browser.newPage();
     await page.goto(TEMPLATE_PAGE_URL);
+    // try {
+    //   await page.addInitScript({ path: './test/fixtures/wordpress/build/gutenberg-stub.js' });
+    // } catch(ex) {
+    //   debugger
+    //   console.error(ex);
+    // }
   });
   afterEach(async () => await page.close());
 
   it("page template is loaded", async() => {
-    const appElementExists = await page.evaluate(async () => !!document.querySelector('#app'));
-    assert(appElementExists, 'div#app exists');
+    assert(await page.evaluate(async () => !!document.querySelector('#app')), 'div#app exists');
   });  
 
   it("injecting react in page template works", async() => {
-    await page.addInitScript({ path: './node_modules/@wordpress/element' });
-    //const appElementExists = await page.evaluate(async () => !!document.querySelector('#app'));
-    //assert(appElementExists, 'div#app exists');
+    assert(await page.evaluate(async () => typeof( window.wp) === 'object'), 'window.wp exists');
+
+    assert(await page.evaluate(async () => typeof( window.wp.components) === 'object'), 'window.wp.components exists');
   });  
 });
