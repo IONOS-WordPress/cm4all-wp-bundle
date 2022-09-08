@@ -10,7 +10,7 @@
 
 - *using `ndb` wrapped in the package.json `debug` script: 
 
-  - set some breakpoints in your cod using the `debugger` statement
+  - set some breakpoints in your code using the `debugger` statement
 
   Examples: 
 

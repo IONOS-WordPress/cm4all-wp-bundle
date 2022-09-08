@@ -37,16 +37,14 @@
     "ndb": "1.1.5",
     "sass": "^1.54.8"
   },
-  "devDependencies": {
-    "debug": "^4.3.4",
-    "playwright": "1.25.1"
-  },
   "peerDependencies": {    
+    "debug": "^4.3.4",
     "@wordpress/element": "^4.14.0",
     "@wordpress/icons": "^9.7.0",
     "@wordpress/primitives": "^3.14.0"
   },
   "devDependencies" : {
+    "playwright": "1.25.1",
     "@wordpress/components": "20.0.0",
     "@wordpress/api-fetch":"6.13.0",
     "@wordpress/autop":"3.16.0",

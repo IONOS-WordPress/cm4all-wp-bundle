@@ -80,6 +80,7 @@ export default function ExposePlugin(
         }
         return retval;
       });
+
       build.onLoad({ filter: /.*/, namespace: name }, async (args) => {
         const source = [`export default ${globals[args.path]};`];
 
@@ -107,6 +108,11 @@ export default function ExposePlugin(
           contents : source.join('\n'),
         };
       });
+
+      build.onEnd(result => {
+        debugger
+        console.log(`build ended : `, result.metafile.inputs);
+      })
     },
   };
 }
