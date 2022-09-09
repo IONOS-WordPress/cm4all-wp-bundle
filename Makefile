@@ -31,14 +31,15 @@ else ifneq (,$(shell which corepack))
 	PNPM := corepack pnpm
 else ifneq (,$(shell if [ -d "${HOME}/.nvm/.git" ]; then echo "nvm installed"; fi))
 	$(info "nvm binary found")
-	$(shell source $(HOME)/.nvm/nvm.sh && nvm install v16.13 && $(MAKE) $(MAKECMDGOALS))
-	# MAKECMDGOALS=bar
-else 
+  $(shell source $(HOME)/.nvm/nvm.sh && nvm install v16.13 && )
+	PNPM := nvm exec v16.13 corepack pnpm
+	# prepend node path to path
+	# corepack enable
+	# /home/lgersman/.nvm/versions/node/v16.13.2/bin/node
+else
 	$(info "dont know how to aquire pnpm")
 endif
 
-
-
-foo:
-	$(info "PNPM=${PNPM}")
-	$(info "${MAKE} ${MAKEFLAGS} ${MAKEOVERRIDES} ${MFLAGS} ${GNUMAKEFLAGS} ${MAKECMDGOALS}")
+.PHONY: all 
+all: 
+>	$(info "PNPM=${PNPM}")
