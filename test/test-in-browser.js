@@ -46,11 +46,36 @@ describe('test in browser', () => {
     });
 
     await page.addScriptTag( { path : './test/fixtures/wordpress/build/mylib.js'}); 
-    assert(await page.evaluate(async () => typeof( window.wp.my.lib) === 'object'), 'window.wp.my.lib exists');
+    assert(await page.evaluate(async () => typeof( window.my.lib) === 'object'), 'window.my.lib exists');
 
     assert(await page.evaluate(async () => window.wp.figure === undefined), 'window.wp.figure is undefined before adding the script');
     await page.addScriptTag( { path : './test/fixtures/wordpress/build/figure.js'});
     await page.addStyleTag( { path : './test/fixtures/wordpress/build/figure.css'}); 
     assert(await page.evaluate(async () => typeof( window.wp.figure) === 'object'), 'window.wp.figure exists');
+  });
+
+  it("injecting transpiled code into page template works", async() => {
+    await bundle({
+      mode: "development",
+      entryPoints: ['./test/fixtures/wordpress/mylib.js', './test/fixtures/wordpress/figure.js'],
+      globals: {
+        './mylib.js' : 'window.my.lib',
+      },
+      outdir: './test/fixtures/wordpress/build',
+    });
+
+    await page.addScriptTag( { path : './test/fixtures/wordpress/build/mylib.js'}); 
+    await page.addScriptTag( { path : './test/fixtures/wordpress/build/figure.js'});
+    await page.addStyleTag( { path : './test/fixtures/wordpress/build/figure.css'}); 
+
+    await page.evaluate(async () => {
+      window.wp.element.render(
+        window.wp.figure.Figure({ src : 'https://picsum.photos/800/600', caption : 'foo bar'}),
+        document.getElementById('app')
+      );
+    });
+
+    assert(await page.evaluate(() => document.querySelector(('#app BUTTON.components-button.has-icon SVG'))), '<SVG> icon found within button rendered by Figure');
+    assert(await page.evaluate(() => document.querySelector('#app FIGURE img[src]')), '<img src=> found within button rendered by Figure');
   });
 });

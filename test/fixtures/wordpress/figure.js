@@ -1,5 +1,3 @@
-import react from 'react';
-import reactDom from 'react-dom';
 import domReady from '@wordpress/dom-ready';
 import { Button } from '@wordpress/components';
 import { close } from '@wordpress/icons';

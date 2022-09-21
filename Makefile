@@ -35,7 +35,7 @@ MAKEFLAGS += --no-print-directory
 ifeq (,$(shell which pnpm))
 	define PNPM_NOT_FOUND
 pnpm is not installed or not in PATH. 
-Install it using 'wget -qO- 'https://get.pnpm.io/install.sh' | sh -' 
+Install it using "wget -qO- 'https://get.pnpm.io/install.sh' | sh -"
 (windows : 'iwr https://get.pnpm.io/install.ps1 -useb | iex') 
 
 See more here : https://docs.npmjs.com/getting-started/installing-node 

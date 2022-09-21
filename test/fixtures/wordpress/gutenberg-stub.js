@@ -41,10 +41,3 @@ export * as url from '@wordpress/url';
 export * as viewport from '@wordpress/viewport';
 export * as warning from '@wordpress/warning';
 export * as wordcount from '@wordpress/wordcount';
-/*
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-window.React = React;
-window.ReactDOM = ReactDOM;
-*/

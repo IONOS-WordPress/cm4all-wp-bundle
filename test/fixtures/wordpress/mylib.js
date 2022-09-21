@@ -4,16 +4,16 @@ export function foo() {
 
 export function bar() {
   console.log('bar');
-  // that will doesnt work 
+  // that will do not work 
   // return (<bar></bar>);
 }
 
 if (typeof window !== 'undefined') {
-  ((window.wp ||= {}).my ||= {}).lib = {
+  (window.my ||= {}).lib = {
     foo,
     bar
   };
 
-  console.log(window.wp.my.lib);
+  console.log(window.my.lib);
 }
 
