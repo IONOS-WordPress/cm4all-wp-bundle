@@ -4,6 +4,7 @@ import { chromium } from 'playwright';
 import bundle from "../src/wp-esbuild-bundler.js";
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { readFile } from 'node:fs/promises';
 
 describe('test in browser', () => {
   const TEMPLATE_PAGE_URL = pathToFileURL(resolve('./test/fixtures/wordpress/gutenberg-stub.html')).href;
@@ -33,4 +34,23 @@ describe('test in browser', () => {
 
     assert(await page.evaluate(async () => typeof( window.wp.components) === 'object'), 'window.wp.components exists');
   });  
+
+  it("injecting transpiled code into page template works", async() => {
+    await bundle({
+      mode: "development",
+      entryPoints: ['./test/fixtures/wordpress/mylib.js', './test/fixtures/wordpress/figure.js'],
+      globals: {
+        './mylib.js' : 'window.my.lib',
+      },
+      outdir: './test/fixtures/wordpress/build',
+    });
+
+    await page.addScriptTag( { path : './test/fixtures/wordpress/build/mylib.js'}); 
+    assert(await page.evaluate(async () => typeof( window.wp.my.lib) === 'object'), 'window.wp.my.lib exists');
+
+    assert(await page.evaluate(async () => window.wp.figure === undefined), 'window.wp.figure is undefined before adding the script');
+    await page.addScriptTag( { path : './test/fixtures/wordpress/build/figure.js'});
+    await page.addStyleTag( { path : './test/fixtures/wordpress/build/figure.css'}); 
+    assert(await page.evaluate(async () => typeof( window.wp.figure) === 'object'), 'window.wp.figure exists');
+  });
 });

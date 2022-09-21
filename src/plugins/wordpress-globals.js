@@ -109,10 +109,10 @@ export default function ExposePlugin(
         };
       });
 
-      build.onEnd(result => {
-        debugger
-        console.log(`build ended : `, result.metafile.inputs);
-      })
+      // build.onEnd(result => {
+      //   debugger
+      //   console.log(`build ended : `, result.metafile.inputs);
+      // })
     },
   };
 }

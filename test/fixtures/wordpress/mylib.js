@@ -13,4 +13,7 @@ if (typeof window !== 'undefined') {
     foo,
     bar
   };
+
+  console.log(window.wp.my.lib);
 }
+

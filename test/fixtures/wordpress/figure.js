@@ -32,4 +32,13 @@ export function Figure({ src, caption }) {
 
 export default function foobar() {
   console.log("huhu");
+  mylib.foo();
+  mylib.bar();
+}
+
+if (typeof window !== 'undefined') {
+  (window.wp ||= {}).figure = {
+    Figure,
+    foobar,
+  };
 }

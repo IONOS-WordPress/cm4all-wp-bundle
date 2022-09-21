@@ -10,11 +10,9 @@
   "packageManager": "pnpm@7.11.0",
   "type": "module",
   "scripts": {
-    "postinstall": "npx -y only-allow pnpm",
-    "version": "node --version",
+    "preinstall": "npx -y only-allow pnpm",
     "test": "NODE_NO_WARNINGS=1 node --test test/test-*.js",
     "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --global:\"./mylib.js\"=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
-    "bundle-gutenberg-stub" : "esbuild test/fixtures/wordpress/gutenberg-stub.js --bundle --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\\\"development\\\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=test/fixtures/wordpress/build/gutenberg-stub.js",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --"
   },
   "bin": {

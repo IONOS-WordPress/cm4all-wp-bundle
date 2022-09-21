@@ -53,11 +53,17 @@ See more here : https://nodejs.org/en/download/
 endif
 
 PNPM != which pnpm
+# disable PNPM update notifier
+export NO_UPDATE_NOTIFIER=1
+
 NODE_VERSION != sed -n '/^use-node-version=/ {s///p;q;}' .npmrc
 NODE := $(HOME)/.local/share/pnpm/nodejs/$(NODE_VERSION)/bin/node 
+ESBUILD := node_modules/.bin/esbuild
 
+# this target triggers pnpm to download/install the required nodejs if not yet available 
 $(NODE):
-> @$(PNPM) exec node --version
+> @$(PNPM) exec node --version 1&>/dev/null
+> touch -m $@
 
 pnpm-lock.yaml: package.json 
 >	$(PNPM) install --lockfile-only
@@ -72,10 +78,15 @@ node_modules: pnpm-lock.yaml
 
 .PHONY: build 
 #HELP: * build artifacts
-build: node_modules 
+build: node_modules $(NODE)
+
+test/fixtures/wordpress/build/gutenberg-stub.js : test/fixtures/wordpress/gutenberg-stub.js node_modules 
+> $(ESBUILD) $< --bundle --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
+> touch -m $@
 
 .PHONY: test 
-test: node_modules 
+#HELP: * executes the tests
+test: node_modules $(NODE) test/fixtures/wordpress/build/gutenberg-stub.js
 > $(PNPM) test
 
 .PHONY: clean
