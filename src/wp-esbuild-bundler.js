@@ -1,5 +1,5 @@
 import esbuild from "esbuild";
-import WordPressGlobalsPlugin from "./plugins/wordpress-globals.js";
+import WordPressGlobalsPlugin from "./plugins/wordpress.js";
 import SassPlugin from "./plugins/sass.js";
 
 export default async function bundle(options) {
@@ -12,8 +12,10 @@ export default async function bundle(options) {
       ".js": "jsx",
     },
     platform: "browser",
-    target: "esnext", // . The default target is esnext which means that by default, esbuild will assume all of the latest JavaScript features are supported.
 
+    // . The default target is esnext which means that by default, esbuild will assume all of the latest JavaScript features are supported.
+    target: options.target ?? "esnext", 
+    
     banner: options.banner,
     footer: options.footer,
 

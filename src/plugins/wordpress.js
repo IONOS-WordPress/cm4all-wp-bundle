@@ -3,7 +3,7 @@ import esbuild from "esbuild";
 import { resolve, dirname, extname, join, normalize } from "node:path";
 import { readFile } from "node:fs/promises";
 
-const DEFAULT_WORDPRESS_GLOBALS = {
+const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   '@wordpress/a11y' : 'window.wp.a11y',
   '@wordpress/api-fetch' : 'window.wp.apiFetch', 
   '@wordpress/autop' : 'window.wp.autop', 
@@ -52,22 +52,22 @@ const DEFAULT_WORDPRESS_GLOBALS = {
 };
 
 export default function ExposePlugin(
-  globalsOption = { },
+  options = {},
 ) {
-  const name = package_json.name + "-wordpress-globals-plugin";
+  const name = package_json.name + "-wordpress-plugin";
   return {
     name,
     setup(build) {
-      const globals = { ...DEFAULT_WORDPRESS_GLOBALS, ...globalsOption};
+      const global_mappings = { ...DEFAULT_WORDPRESS_GLOBAL_MAPPINGS, ...options.mappings ?? {}};
 
-      const filesToFilter = Object.keys(globals).map(fileToFilter => fileToFilter.replace(/[^A-Za-z0-9_]/g, '\\$&'));
+      const filesToFilter = Object.keys(global_mappings).map(fileToFilter => fileToFilter.replace(/[^A-Za-z0-9_]/g, '\\$&'));
       const filter = new RegExp(`^(${filesToFilter.join("|")})$`);
 
       build.onResolve({ filter }, async (args) => {
         const retval = { path: args.path, };
       
         // delegate to our onLoad callback if the module is mapped to a global variable
-        if(!!globals[args.path]) {
+        if(!!global_mappings[args.path]) {
           retval.namespace = name;
           if(args.path.startsWith('.')) {
             retval.pluginData = {
@@ -82,7 +82,7 @@ export default function ExposePlugin(
       });
 
       build.onLoad({ filter: /.*/, namespace: name }, async (args) => {
-        const source = [`export default ${globals[args.path]};`];
+        const source = [`export default ${global_mappings[args.path]};`];
 
         // try to evaluate the named exports
         try {
@@ -97,22 +97,16 @@ export default function ExposePlugin(
               )
               .join(", ");
 
-            source.push(`export const { ${exports} } = ${globals[args.path]};`);
+            source.push(`export const { ${exports} } = ${global_mappings[args.path]};`);
           }
-        } catch {}
-        // } catch(ex) {
-        //   console.log(ex);
-        // }
+        } catch(ex) {
+          console.log(ex);
+        }
 
         return {
           contents : source.join('\n'),
         };
       });
-
-      // build.onEnd(result => {
-      //   debugger
-      //   console.log(`build ended : `, result.metafile.inputs);
-      // })
     },
   };
 }

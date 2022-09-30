@@ -1,7 +1,7 @@
 {
   "name": "wp-esbuild-bundler",
   "version": "1.0.0",
-  "description": "",
+  "description": "A js/css resources bundler targeting WordPress Gutenberg. References to `@wordpress/*` NPM packages will be transformed to their matching global pendants (`window.wp.*`). JSX/PostCSS/SCSS support is built-in.",
   "main": "index.js",
   "engines": {
     "node": ">=18.8",
@@ -12,8 +12,10 @@
   "scripts": {
     "preinstall": "npx -y only-allow pnpm",
     "test": "NODE_NO_WARNINGS=1 node --test test/test-*.js",
-    "start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --global:\"./mylib.js\"=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
-    "debug": "NODE_NO_WARNINGS=1 ndb npm run --"
+    "test:start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --wordpress.mappings[\"./mylib.js\"]=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
+    "start": "./bin/wp-esbuild-bundler-cli.js",
+    "debug": "NODE_NO_WARNINGS=1 ndb npm run --",
+    "check-updates": "pnpm update --interactive"
   },
   "bin": {
     "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
@@ -23,13 +25,15 @@
     "esbuild",
     "gutenberg",
     "cli",
-    "transpiler"
+    "transpiler",
+    "scss",
+    "postcss"
   ],
   "author": {
     "email": "lars.gersmann@gmail.com",
     "name": "lars gersmann"
   },
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "esbuild": "^0.15.7",
     "ndb": "1.1.5",
