@@ -46,6 +46,7 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
+    "@changesets/cli": "2.25.0",
     "@wordpress/api-fetch": "6.15.0",
     "@wordpress/autop": "3.18.0",
     "@wordpress/blob": "3.18.0",
