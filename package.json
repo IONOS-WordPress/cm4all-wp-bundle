@@ -1,5 +1,5 @@
 {
-  "name": "wp-esbuild-bundler",
+  "name": "@lgersman-wickeltisch/wp-esbuild-bundler",
   "version": "1.0.0",
   "description": "A js/css resources bundler targeting WordPress Gutenberg. References to `@wordpress/*` NPM packages will be transformed to their matching global pendants (`window.wp.*`). JSX/PostCSS/SCSS support is built-in.",
   "main": "index.js",
@@ -17,6 +17,9 @@
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --",
     "check-updates": "pnpm update --interactive"
   },
+  "files": [
+    "src/**/*"
+  ],
   "bin": {
     "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
   },
@@ -30,13 +33,12 @@
     "postcss"
   ],
   "author": {
-    "email": "lars.gersmann@gmail.com",
+    "email": "lars.gersmann@cm4all.com",
     "name": "lars gersmann"
   },
   "license": "MIT",
   "dependencies": {
     "esbuild": "^0.15.10",
-    "ndb": "1.1.5",
     "sass": "^1.55.0"
   },
   "peerDependencies": {
@@ -46,6 +48,7 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
+    "ndb": "1.1.5",
     "@changesets/cli": "2.25.0",
     "@wordpress/api-fetch": "6.15.0",
     "@wordpress/autop": "3.18.0",
