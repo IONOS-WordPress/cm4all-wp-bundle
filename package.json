@@ -23,6 +23,9 @@
   "bin": {
     "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
   },
+  "publishConfig" : {
+    "access": "public"
+  },
   "keywords": [
     "wordpress",
     "esbuild",
