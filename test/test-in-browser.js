@@ -72,7 +72,7 @@ describe('test in browser', () => {
 
     await page.evaluate(async () => {
       window.wp.element.render(
-        window.wp.figure.Figure({ src : 'https://picsum.photos/800/600', caption : 'foo bar'}),
+        window.wp.figure.Figure({ src : './test/fixtures/wordpress/114-800x600.jpg', caption : 'foo bar'}),
         document.getElementById('app')
       );
     });

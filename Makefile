@@ -115,6 +115,12 @@ distclean: clean
 # uninstall nodejs version via nodejs
 > test -f $(NODE) && $(PNPM) env remove --global $(NODE_VERSION) ||:
 
+.PHONY: update 
+#HELP: * update dependencies
+update: 
+> $(PNPM) update --latest --interactive
+
+
 # see https://gist.github.com/Olshansk/689fc2dee28a44397c6e31a0776ede30
 .PHONY: help
 #HELP: * prints this screen
