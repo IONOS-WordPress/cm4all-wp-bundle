@@ -10,7 +10,7 @@
   "packageManager": "pnpm@7.11.0",
   "type": "module",
   "scripts": {
-    "preinstall": "npx -y only-allow pnpm",
+    "preinstall": "echo yes | npx only-allow pnpm",
     "test": "NODE_NO_WARNINGS=1 node --test test/test-*.js",
     "test:start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --wordpress.mappings[\"./mylib.js\"]=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
     "start": "./bin/wp-esbuild-bundler-cli.js",
