@@ -34,7 +34,7 @@ export default async function bundle(options) {
     minify: options.mode !== "development",
     sourcemap: options.mode === "development" ? "inline" : false,
     metafile: true,
-    plugins: [SassPlugin(options.sass), WordPressGlobalsPlugin(options.globals)],
+    plugins: [SassPlugin(options.sass), WordPressGlobalsPlugin(options.wordpress), ...options.plugins ?? []],
     watch: options.watch,
   };
 

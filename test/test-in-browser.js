@@ -39,7 +39,7 @@ describe('test in browser', () => {
     await bundle({
       mode: "development",
       entryPoints: ['./test/fixtures/wordpress/mylib.js', './test/fixtures/wordpress/figure.js'],
-      global: {
+      wordpress: {
         mappings : {
           './mylib.js' : 'window.my.lib',
         }
@@ -60,8 +60,10 @@ describe('test in browser', () => {
     await bundle({
       mode: "development",
       entryPoints: ['./test/fixtures/wordpress/mylib.js', './test/fixtures/wordpress/figure.js'],
-      globals: {
-        './mylib.js' : 'window.my.lib',
+      wordpress: {
+        mappings: {
+          './mylib.js' : 'window.my.lib',
+        }
       },
       outdir: './test/fixtures/wordpress/build',
     });

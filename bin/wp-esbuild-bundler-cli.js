@@ -5,7 +5,7 @@ import { parseArgs, inspect } from "node:util";
 import bundle from "../src/wp-esbuild-bundler.js";
 
 import package_json from '../package.json' assert {type: 'json'}
-
+/*
 function extractPrefixedOptions(args, prefix) {
   return Object.fromEntries(
     Object.entries(args)
@@ -13,7 +13,7 @@ function extractPrefixedOptions(args, prefix) {
       .map(([key, value]) => [key.substring(prefix.length), value]),
   );
 }
-
+*/
 const ARGS = {
   options: {
     watch: {
@@ -55,7 +55,7 @@ const options = {
   verbose: args.values.verbose,
   mode: args.values.mode === "development" ? "development" : "production",
   entryPoints: args.positionals,
-  wordpress: extractPrefixedOptions(args.values, "wordpress."),
+  wordpress: {},//extractPrefixedOptions(args.values, "wordpress."),
   outdir: args.values.outdir ?? cwd(),
   target: args.values.target ?? 'esnext',
   banner: args.values.banner,
