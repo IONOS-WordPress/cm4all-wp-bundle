@@ -1,6 +1,6 @@
 {
   "name": "@lgersman-wickeltisch/wp-esbuild-bundler",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A js/css resources bundler targeting WordPress Gutenberg. References to `@wordpress/*` NPM packages will be transformed to their matching global pendants (`window.wp.*`). JSX/PostCSS/SCSS support is built-in.",
   "main": "index.js",
   "engines": {
@@ -23,7 +23,7 @@
   "bin": {
     "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
   },
-  "publishConfig" : {
+  "publishConfig": {
     "access": "public"
   },
   "keywords": [
@@ -51,7 +51,6 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
-    "ndb": "1.1.5",
     "@changesets/cli": "2.25.0",
     "@wordpress/api-fetch": "6.15.0",
     "@wordpress/autop": "3.18.0",
@@ -59,11 +58,13 @@
     "@wordpress/block-editor": "10.1.0",
     "@wordpress/block-library": "7.15.0",
     "@wordpress/components": "21.1.0",
+    "@wordpress/dom-ready": "3.18.0",
     "@wordpress/edit-post": "6.15.0",
     "@wordpress/format-library": "3.16.0",
     "@wordpress/media-utils": "4.9.0",
     "@wordpress/plugins": "4.16.0",
     "@wordpress/preferences-persistence": "1.10.0",
+    "ndb": "1.1.5",
     "playwright": "1.26.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
