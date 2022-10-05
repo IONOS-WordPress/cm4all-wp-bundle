@@ -1,5 +1,5 @@
-#!/usr/bin/env -S NODE_NO_WARNINGS=1 node
-
+#!/usr/bin/env NODE_NO_WARNINGS=1 node
+# #!/usr/bin/env -S NODE_NO_WARNINGS=1 node
 import { cwd } from "node:process";
 import { parseArgs, inspect } from "node:util";
 import bundle from "../src/wp-esbuild-bundler.js";

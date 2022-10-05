@@ -71,14 +71,29 @@ pnpm-lock.yaml: package.json
 
 node_modules: pnpm-lock.yaml 
 # pnpm bug: "pnpm use env ..." is actually not needed but postinall npx calls fails
-> pnpm env use --global $(NODE_VERSION)
-
+> $(PNPM) env use --global $(NODE_VERSION)
 >	$(PNPM) install --frozen-lockfile
 > @touch -m node_modules 
 
 .PHONY: build 
 #HELP: * build artifacts
 build: node_modules $(NODE)
+
+docker/package/ : $(src/%) package.json LICENSE.md README.md 
+# unfortunately we cannot use pnpm deploy since this action requires pnpm workspaces enabled 
+> TGZ=$$($(PNPM) pack --pack-destination ./docker) && tar -xvf ./docker/$$TGZ --directory ./docker
+> cd ./docker
+# > rm $$TGZ
+> touch -m ./package 
+
+.PHONY: docker 
+#HELP: * build artifacts
+docker: package.json docker/package/ .npmrc
+> PNPM_PACKAGE=$$(jq -r '.packageManager' package.json)
+> NODEJS_VERSION=$$(grep -oP 'use-node-version=\K.*' .npmrc)
+# value can be alpine|bullseye
+> LINUX_DIST=bullseye
+> DOCKER_BUILDKIT=0 docker build --build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST --build-arg pnpm_package=$$PNPM_PACKAGE -t lgersman-wickeltisch-wp-esbuild-bundler ./docker/
 
 test/fixtures/wordpress/build/gutenberg-stub.js : test/fixtures/wordpress/gutenberg-stub.js node_modules 
 > $(ESBUILD) $< --bundle --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
