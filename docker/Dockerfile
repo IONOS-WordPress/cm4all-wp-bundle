@@ -5,11 +5,11 @@ FROM node:${nodejs_base}
 
 ARG pnpm_package
 RUN npm config set update-notifier false
-# RUN npm install --silent -g ${pnpm_package}
 
-# ADD ./package /tmp/package
-ADD ./lgersman-wickeltisch-wp-esbuild-bundler-1.0.1.tgz /tmp
-# RUN sh -c 'pnpm setup'
-RUN npm install -g /tmp/package
+COPY ./*.tgz /tmp
+WORKDIR /app
+RUN ls /tmp/*.tgz | xargs npm install -g --silent --omit=peer --omit=dev
 
-# ENTRYPOINT [ "wp-esbuild-bundler-cli" ]
+# ENTRYPOINT ['/bin/bash']
+# USER node
+CMD [ "wp-esbuild-bundler-cli" ]

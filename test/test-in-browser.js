@@ -7,6 +7,7 @@ import { pathToFileURL } from 'node:url';
 import { readFile } from 'node:fs/promises';
 
 describe('test in browser', () => {
+
   const TEMPLATE_PAGE_URL = pathToFileURL(resolve('./test/fixtures/wordpress/gutenberg-stub.html')).href;
 
   let browser, page;
@@ -26,6 +27,8 @@ describe('test in browser', () => {
   afterEach(async () => await page.close());
 
   it("page template is loaded", async() => {
+
+    // t.diagnostic(`DIAG before it`);
     assert(await page.evaluate(async () => !!document.querySelector('#app')), 'div#app exists');
   });  
 

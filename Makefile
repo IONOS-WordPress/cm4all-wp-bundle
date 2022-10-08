@@ -54,7 +54,7 @@ endif
 
 PNPM != which pnpm
 # disable PNPM update notifier
-export NO_UPDATE_NOTIFIER=1
+# export NO_UPDATE_NOTIFIER=1
 
 NODE_VERSION != sed -n '/^use-node-version=/ {s///p;q;}' .npmrc
 NODE := $(HOME)/.local/share/pnpm/nodejs/$(NODE_VERSION)/bin/node 
