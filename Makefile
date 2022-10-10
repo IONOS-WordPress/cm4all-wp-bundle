@@ -60,6 +60,8 @@ NODE_VERSION != sed -n '/^use-node-version=/ {s///p;q;}' .npmrc
 NODE := $(HOME)/.local/share/pnpm/nodejs/$(NODE_VERSION)/bin/node 
 ESBUILD := node_modules/.bin/esbuild
 
+DOCKER_IMAGE := lgersman-wickeltisch-wp-esbuild-bundler
+
 # this target triggers pnpm to download/install the required nodejs if not yet available 
 $(NODE):
 > @$(PNPM) exec node --version 1&>/dev/null
@@ -89,11 +91,15 @@ docker/package/ : $(src/%) package.json LICENSE.md README.md
 .PHONY: docker 
 #HELP: * build artifacts
 docker: package.json docker/package/ .npmrc
-> PNPM_PACKAGE=$$(jq -r '.packageManager' package.json)
+> PACKAGE_VERSION=$$(jq -r '.version' package.json)
 > NODEJS_VERSION=$$(grep -oP 'use-node-version=\K.*' .npmrc)
-# value can be alpine|bullseye
+# value can be alpine|bullseye|bullseye-slim
 > LINUX_DIST=bullseye
-> DOCKER_BUILDKIT=0 docker build --build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST --build-arg pnpm_package=$$PNPM_PACKAGE -t lgersman-wickeltisch-wp-esbuild-bundler ./docker/
+> DOCKER_SCAN_SUGGEST=false DOCKER_BUILDKIT=0 docker build --build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST -t $(DOCKER_IMAGE):latest -t $(DOCKER_IMAGE):$$PACKAGE_VERSION ./docker/
+
+.PHONY: docker-run
+docker-run: docker
+> docker run -it --rm $(DOCKER_IMAGE):latest bash
 
 test/fixtures/wordpress/build/gutenberg-stub.js : test/fixtures/wordpress/gutenberg-stub.js node_modules 
 > $(ESBUILD) $< --bundle --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
@@ -110,6 +116,7 @@ clean:
 # remove everything matching .gitignore entries (-f is force, you can add -q to suppress command output, exclude node_modules and node_modules/**)
 #   => If an untracked directory is managed by a different git repository, it is not removed by default. Use -f option twice if you really want to remove such a directory.
 > git clean -Xfd -e '!/*.env' -e '!/*.code-workspace' -e '!**/node_modules' -e '!**/node_modules/**' 
+> docker image rm $$(docker images -q $(DOCKER_IMAGE)) 2>/dev/null || true
 
 .PHONY: all
 #HELP: * build the project
