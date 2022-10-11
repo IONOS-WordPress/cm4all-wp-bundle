@@ -42,6 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "esbuild": "^0.15.10",
+    "lodash.merge": "4.6.2",
     "sass": "^1.55.0"
   },
   "peerDependencies": {

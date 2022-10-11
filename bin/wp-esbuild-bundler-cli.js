@@ -1,18 +1,12 @@
 #!/usr/bin/env -S NODE_NO_WARNINGS=1 node --
 import { cwd } from "node:process";
 import { parseArgs, inspect } from "node:util";
+import { readFileSync } from "node:fs";
+import merge from 'lodash.merge';
 import bundle from "../src/wp-esbuild-bundler.js";
 
 import package_json from '../package.json' assert {type: 'json'}
-/*
-function extractPrefixedOptions(args, prefix) {
-  return Object.fromEntries(
-    Object.entries(args)
-      .filter(([key, value]) => key.startsWith(prefix))
-      .map(([key, value]) => [key.substring(prefix.length), value]),
-  );
-}
-*/
+
 const ARGS = {
   options: {
     watch: {
@@ -39,6 +33,9 @@ const ARGS = {
     outdir: {
       type: "string",
     },
+    'global-name' : {
+      type: "string",
+    },
   },
   allowPositionals: true,
   strict: false,
@@ -49,7 +46,7 @@ const args = parseArgs(ARGS);
 if(args.values.verbose) {
   console.log("args = %s", JSON.stringify(args, null, 2));
 }
-
+// @TODO : apply defaults after reading config from stdin
 const options = {
   verbose: args.values.verbose,
   mode: args.values.mode === "development" ? "development" : "production",
@@ -63,12 +60,26 @@ const options = {
   sass: {},
 };
 
+if(args.values['global-name']) {
+  options['global-name'] = args.values['global-name'];
+}
+
+try {
+  const config = readFileSync(process.stdin.fd, 'utf-8');
+  const jsonConfig = JSON.parse(config);
+  merge(options, jsonConfig);
+
+} catch(ex) {
+  if(args.values.verbose) {
+    console.log("Skip reading config from stdin since stdin is not available or does not contain valid json : %s", ex.message);
+  }  
+}
+
 if(args.values.verbose) {
   console.log("options = %s", JSON.stringify(options, null, 2));
 }
 
 if(args.values.help || !args.positionals.length) {
-
   console.log(`${package_json.name} ${package_json.version}
 
 ${package_json.description}

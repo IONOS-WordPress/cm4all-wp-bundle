@@ -19,6 +19,7 @@ specifiers:
   '@wordpress/primitives': ^3.14.0
   debug: ^4.3.4
   esbuild: ^0.15.10
+  lodash.merge: 4.6.2
   ndb: 1.1.5
   playwright: 1.26.1
   react: 18.2.0
@@ -31,6 +32,7 @@ dependencies:
   '@wordpress/primitives': 3.16.0
   debug: 4.3.4
   esbuild: 0.15.10
+  lodash.merge: 4.6.2
   sass: 1.55.0
 
 devDependencies:
@@ -3414,6 +3416,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /lodash.merge/4.6.2:
+    resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+    dev: false
 
   /lodash.startcase/4.4.0:
     resolution: {integrity: sha512-+WKqsK294HMSc2jEbNgpHpd0JfIBhp7rEV4aqXWqFr6AlXov+SlcgB1Fv01y2kGe3Gc8nMW7VA0SrGuSkRfIEg==}
