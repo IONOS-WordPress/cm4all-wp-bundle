@@ -1,5 +1,5 @@
 ---
-"@lgersman-wickeltisch/wp-esbuild-bundler": major
+"@lgersman-wickeltisch/wp-esbuild-bundle": major
 ---
 
 enable cli to read json config from stdin
@@ -19,6 +19,9 @@ Example config:
 }
 ```
 
+Example usage:
 ```sh
-cat ./myconfig.json | wp-esbuild-bundler --outfile dist/foo in.js
+cat ./myconfig.json | wp-esbuild-bundle-cli --outfile dist/foo in.js
+
+echo '{ "wordpress" : { "mappings" : { "@cm4all/foo" : "window.cm4all.foo" } }}' | wp-esbuild-bundle-cli --outdir dist foo.js
 ```

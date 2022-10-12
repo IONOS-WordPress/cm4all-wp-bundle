@@ -60,7 +60,7 @@ NODE_VERSION != sed -n '/^use-node-version=/ {s///p;q;}' .npmrc
 NODE := $(HOME)/.local/share/pnpm/nodejs/$(NODE_VERSION)/bin/node 
 ESBUILD := node_modules/.bin/esbuild
 
-DOCKER_IMAGE := lgersman-wickeltisch-wp-esbuild-bundler
+DOCKER_IMAGE := lgersman-wickeltisch-wp-esbuild-bundle
 
 # this target triggers pnpm to download/install the required nodejs if not yet available 
 $(NODE):
@@ -81,16 +81,17 @@ node_modules: pnpm-lock.yaml
 #HELP: * build artifacts
 build: node_modules $(NODE)
 
-docker/package/ : $(src/%) package.json LICENSE.md README.md 
+docker/%.tgz : $(src/%) package.json LICENSE.md README.md 
 # unfortunately we cannot use pnpm deploy since this action requires pnpm workspaces enabled 
-> TGZ=$$($(PNPM) pack --pack-destination ./docker) && tar -xvf ./docker/$$TGZ --directory ./docker
-> cd ./docker
+# > TGZ=$$($(PNPM) pack --pack-destination ./docker) && tar -xvf ./docker/$$TGZ --directory ./docker
+> $(PNPM) pack --pack-destination ./docker
+# > cd ./docker
 # > rm $$TGZ
-> touch -m ./package 
+# > touch -m ./package 
 
 .PHONY: docker 
 #HELP: * build artifacts
-docker: package.json docker/package/ .npmrc
+docker: package.json docker/%.tgz .npmrc
 > PACKAGE_VERSION=$$(jq -r '.version' package.json)
 > NODEJS_VERSION=$$(grep -oP 'use-node-version=\K.*' .npmrc)
 # value can be alpine|bullseye|bullseye-slim
@@ -101,9 +102,20 @@ docker: package.json docker/package/ .npmrc
 docker-run: docker
 > docker run -it --rm $(DOCKER_IMAGE):latest bash
 
+SCRIPT_SOURCES := $(wildcard /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/*.mjs)
+SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
+
+.PHONY: impex-js
+impex-js : $(SCRIPT_TARGETS)
+
+/home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/dist/%.js : /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/%.mjs
+> $(eval $@_GLOBAL_NAME := $(basename $(notdir $@)))
+> echo '{ "wordpress" : { "mappings" : { "@cm4all-impex/debug" : "wp.impex.debug", "@cm4all-impex/store" : "wp.impex.store", "@cm4all-impex/filters" : "wp.impex.filters" } }}' | docker run -i --rm -v /home/lgersman/workspace/cm4all-wp-impex:/app lgersman-wickeltisch-wp-esbuild-bundle:latest --verbose --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $(patsubst /home/lgersman/workspace/cm4all-wp-impex/%,%, $<)
+# > echo '' | docker run -i --rm -v /home/lgersman/workspace/cm4all-wp-impex:/app lgersman-wickeltisch-wp-esbuild-bundle:latest 
+
 test/fixtures/wordpress/build/gutenberg-stub.js : test/fixtures/wordpress/gutenberg-stub.js node_modules 
 > $(ESBUILD) $< --bundle --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
-> touch -m $@
+> touch -m $<
 
 .PHONY: test 
 #HELP: * executes the tests

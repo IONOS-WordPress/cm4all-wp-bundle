@@ -1,4 +1,4 @@
-# @lgersman-wickeltisch/wp-esbuild-bundler
+# @lgersman-wickeltisch/wp-esbuild-bundle
 
 ## 1.0.1
 

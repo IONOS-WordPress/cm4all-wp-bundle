@@ -1,5 +1,5 @@
 ---
-"@lgersman-wickeltisch/wp-esbuild-bundler": patch
+"@lgersman-wickeltisch/wp-esbuild-bundle": patch
 ---
 
-add docker image providing wp-esbuild-bundler
+add docker image providing wp-esbuild-bundle

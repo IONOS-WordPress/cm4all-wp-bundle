@@ -1,5 +1,5 @@
 {
-  "name": "@lgersman-wickeltisch/wp-esbuild-bundler",
+  "name": "@lgersman-wickeltisch/wp-esbuild-bundle",
   "version": "1.0.1",
   "description": "A js/css resources bundler targeting WordPress Gutenberg. References to `@wordpress/*` NPM packages will be transformed to their matching global pendants (`window.wp.*`). JSX/PostCSS/SCSS support is built-in.",
   "main": "index.js",
@@ -12,8 +12,8 @@
   "scripts": {
     "_preinstall": "echo yes | npx only-allow pnpm",
     "test": "NODE_NO_WARNINGS=1 node --test test/test-*.js",
-    "test:start": "./bin/wp-esbuild-bundler-cli.js --verbose --outdir=./dist --mode=development --wordpress.mappings[\"./mylib.js\"]=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
-    "start": "./bin/wp-esbuild-bundler-cli.js",
+    "test:start": "./bin/wp-esbuild-bundle-cli.js --verbose --outdir=./dist --mode=development --wordpress.mappings[\"./mylib.js\"]=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
+    "start": "./bin/wp-esbuild-bundle-cli.js",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --",
     "check-updates": "pnpm update --interactive"
   },
@@ -21,7 +21,7 @@
     "src/**/*"
   ],
   "bin": {
-    "wp-esbuild-bundler-cli": "bin/wp-esbuild-bundler-cli.js"
+    "wp-esbuild-bundle-cli": "bin/wp-esbuild-bundle-cli.js"
   },
   "publishConfig": {
     "access": "public"

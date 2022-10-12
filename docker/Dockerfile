@@ -17,4 +17,5 @@ RUN ls /tmp/*.tgz | xargs npm install -g --silent --omit=peer --omit=dev
 
 
 USER node
-ENTRYPOINT  [ "dumb-init", "wp-esbuild-bundler-cli"]
+# ENTRYPOINT  [ "dumb-init", "wp-esbuild-bundle-cli"]
+ENTRYPOINT  [ "wp-esbuild-bundle-cli"]

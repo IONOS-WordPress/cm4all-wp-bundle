@@ -48,6 +48,7 @@ const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   '@wordpress/warning': 'window.wp.warning', 
   '@wordpress/wordcount': 'window.wp.wordcount',
   'react': 'window.React',
+  // 'React': 'window.React',
   'react-dom': 'window.ReactDom',
 };
 
@@ -59,6 +60,8 @@ export default function ExposePlugin(
     name,
     setup(build) {
       const global_mappings = { ...DEFAULT_WORDPRESS_GLOBAL_MAPPINGS, ...options.mappings ?? {}};
+
+      console.log({ global_mappings });
 
       const filesToFilter = Object.keys(global_mappings).map(fileToFilter => fileToFilter.replace(/[^A-Za-z0-9_]/g, '\\$&'));
       const filter = new RegExp(`^(${filesToFilter.join("|")})$`);

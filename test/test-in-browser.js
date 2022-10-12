@@ -1,7 +1,7 @@
 import { describe, it, before, after, beforeEach, afterEach  } from 'node:test';
 import assert  from "node:assert/strict";
 import { chromium } from 'playwright';
-import bundle from "../src/wp-esbuild-bundler.js";
+import bundle from "../src/wp-esbuild-bundle.js";
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { readFile } from 'node:fs/promises';
