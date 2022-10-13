@@ -48,7 +48,6 @@ const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   '@wordpress/warning': 'window.wp.warning', 
   '@wordpress/wordcount': 'window.wp.wordcount',
   'react': 'window.React',
-  // 'React': 'window.React',
   'react-dom': 'window.ReactDom',
 };
 

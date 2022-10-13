@@ -110,8 +110,7 @@ impex-js : $(SCRIPT_TARGETS)
 
 /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/dist/%.js : /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/%.mjs
 > $(eval $@_GLOBAL_NAME := $(basename $(notdir $@)))
-> echo '{ "wordpress" : { "mappings" : { "@cm4all-impex/debug" : "wp.impex.debug", "@cm4all-impex/store" : "wp.impex.store", "@cm4all-impex/filters" : "wp.impex.filters" } }}' | docker run -i --rm -v /home/lgersman/workspace/cm4all-wp-impex:/app lgersman-wickeltisch-wp-esbuild-bundle:latest --verbose --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $(patsubst /home/lgersman/workspace/cm4all-wp-impex/%,%, $<)
-# > echo '' | docker run -i --rm -v /home/lgersman/workspace/cm4all-wp-impex:/app lgersman-wickeltisch-wp-esbuild-bundle:latest 
+> echo '{ "wordpress" : { "mappings" : { "@cm4all-impex/debug" : "wp.impex.debug", "@cm4all-impex/store" : "wp.impex.store", "@cm4all-impex/filters" : "wp.impex.filters", "React": "window.React" } }}' | docker run -i --rm -v /home/lgersman/workspace/cm4all-wp-impex:/app lgersman-wickeltisch-wp-esbuild-bundle:latest --verbose --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $(patsubst /home/lgersman/workspace/cm4all-wp-impex/%,%, $<)
 
 test/fixtures/wordpress/build/gutenberg-stub.js : test/fixtures/wordpress/gutenberg-stub.js node_modules 
 > $(ESBUILD) $< --bundle --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
