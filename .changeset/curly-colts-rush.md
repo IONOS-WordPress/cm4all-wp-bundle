@@ -4,7 +4,7 @@
 
 enable cli to read json config from stdin
 
-this feature allows you to create arbitrary bundler configuration and supply it to the bundler via stdin
+this feature allows you to create arbitrary json based bundler configurations and supply it to the bundler via stdin
 
 Example config: 
 

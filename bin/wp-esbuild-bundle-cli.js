@@ -140,5 +140,8 @@ Example:
 If you want to declare more individual configurations, checkout the JS API.
 `);
 } else {
-  await bundle(options);
+  const metadata = await bundle(options);
+  if(options.verbose) {
+    console.log(metadata);
+  }
 }

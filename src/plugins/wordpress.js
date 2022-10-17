@@ -1,7 +1,10 @@
 import package_json from "../../package.json" assert { type: "json" };
 import esbuild from "esbuild";
-import { resolve, dirname, extname, join, normalize } from "node:path";
+import { resolve, dirname, extname, join, normalize, delimiter, basename } from "node:path";
 import { readFile } from "node:fs/promises";
+import { createRequire } from "node:module";
+import { pathToFileURL } from "node:url";
+import memoize from "lodash.memoize";
 
 const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   '@wordpress/a11y' : 'window.wp.a11y',
@@ -51,6 +54,46 @@ const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   'react-dom': 'window.ReactDom',
 };
 
+const DEFAULT_WORDPRESS_RESOLVE_OPTIONS = {
+  paths : process.env?.NODE_PATH.split(delimiter) ?? [process.cwd],
+  packages : [
+
+  ],
+};
+
+const requireResolver = memoize((path) => createRequire(path));
+
+async function resolvePackage(packageName, resolveOptions, verbose) {
+  const packageAlias = resolveOptions.packages[packageName];
+  if(packageAlias) {
+    const { resolve } = requireResolver(dirname(packageAlias));
+    try {
+      const module = await import(pathToFileURL(resolve(basename(packageAlias))));
+      return module;
+    } catch {}
+
+    try {
+      const module = await import(pathToFileURL(packageAlias));
+      return module;
+    } catch(ex) {
+      console.log(ex);
+    }
+  } else {
+    for (const resolvePath of resolveOptions.paths) {
+      const { resolve } = requireResolver(resolvePath);
+      try {
+        return import(pathToFileURL(resolve(packageName)));
+      } catch {}
+    }
+  }
+
+  if(verbose) {
+    console.warn('Could not resolve package(=%s) using resolve options(=%j)', packageName, resolveOptions);
+  }
+
+  return {};
+}
+
 export default function ExposePlugin(
   options = {},
 ) {
@@ -59,6 +102,8 @@ export default function ExposePlugin(
     name,
     setup(build) {
       const global_mappings = { ...DEFAULT_WORDPRESS_GLOBAL_MAPPINGS, ...options.mappings ?? {}};
+      const resolve_options = { ...DEFAULT_WORDPRESS_RESOLVE_OPTIONS, ...options.resolve ?? {}};
+      const verbose = options.verbose ?? ['info', 'debug', 'verbose'].includes(build?.initialOptions)
 
       console.log({ global_mappings });
 
@@ -87,22 +132,20 @@ export default function ExposePlugin(
         const source = [`export default ${global_mappings[args.path]};`];
 
         // try to evaluate the named exports
-        try {
-          const result = args.pluginData || await build.resolve(args.path);
-          if (result.errors.length == 0) {
-            const module = await import(result.path);
+        const result = args.pluginData || await build.resolve(args.path);
+        if (result.errors.length == 0) {
+          const resolvedPackage = await resolvePackage(result.path, resolve_options, verbose);
 
-            const exports = Object.keys(module.default || module)
-              .filter(
-                (exportLiteral) =>
-                  !["default", "__esModule"].includes(exportLiteral),
-              )
-              .join(", ");
+          const exports = Object.keys(resolvedPackage.default || resolvedPackage)
+            .filter(
+              (exportLiteral) =>
+                !["default", "__esModule"].includes(exportLiteral),
+            )
+            .join(", ");
 
+          if(exports) {
             source.push(`export const { ${exports} } = ${global_mappings[args.path]};`);
           }
-        } catch(ex) {
-          console.log(ex);
         }
 
         return {

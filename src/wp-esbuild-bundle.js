@@ -1,9 +1,12 @@
 import esbuild from "esbuild";
 import WordPressGlobalsPlugin from "./plugins/wordpress.js";
 import SassPlugin from "./plugins/sass.js";
+import merge from 'lodash.merge';
 
 export default async function bundle(options) {
-  const esbuild_options = {
+  const esbuild_options = options.esbuild ?? {};
+
+  const bundler_options = {
     entryPoints: options.entryPoints,
     bundle: true,
     // assume mjs files contains jsx syntax
@@ -38,8 +41,14 @@ export default async function bundle(options) {
     watch: options.watch,
   };
 
+  merge(esbuild_options, bundler_options);
+
   if(options['global-name']) {
     esbuild_options.globalName = options['global-name'];
+  }
+
+  if(options.verbose) {
+    console.log("esbuild.bundle(...) options = %s", JSON.stringify(esbuild_options, null, 2));
   }
 
   const result = await esbuild.build(esbuild_options);
