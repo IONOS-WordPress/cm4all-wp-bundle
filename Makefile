@@ -95,12 +95,13 @@ docker: package.json docker/%.tgz .npmrc
 > PACKAGE_VERSION=$$(jq -r '.version' package.json)
 > NODEJS_VERSION=$$(grep -oP 'use-node-version=\K.*' .npmrc)
 # value can be alpine|bullseye|bullseye-slim
-> LINUX_DIST=bullseye
+> LINUX_DIST=bullseye-slim
 > DOCKER_SCAN_SUGGEST=false DOCKER_BUILDKIT=0 docker build --build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST -t $(DOCKER_IMAGE):latest -t $(DOCKER_IMAGE):$$PACKAGE_VERSION ./docker/
+> docker image ls $(DOCKER_IMAGE):$$PACKAGE_VERSION
 
-.PHONY: docker-run
-docker-run: docker
-> docker run -it --rm $(DOCKER_IMAGE):latest bash
+# .PHONY: docker-run
+# docker-run: docker
+# > docker run -it --rm $(DOCKER_IMAGE):latest bash
 
 SCRIPT_SOURCES := $(wildcard /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/*.mjs)
 SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))

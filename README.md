@@ -1,3 +1,5 @@
+# Introduction
+
 # Development
 
 - ensure you have NodeJS > v16.13 installed (example using nvm: `nvm install v16.13`). 
@@ -61,4 +63,5 @@ executing `PWDEBUG=1 corepack pnpm test` will open up the playwright debugger
 - `string` `banner` (optional): banner to be added to the generated content.
 - `string` `footer` (optional): footer to be added to the generated content.
 - `boolean` `watch` (optional): if true the bundle will be rebuilt when source files change
+- `boolean` `analyze` (optional): if true the bundler will output some useful statistics about the generated bundle
 - `object` `sass` (optional): options for sass/scss plugin (see https://sass-lang.com/documentation/js-api/interfaces/Options)
