@@ -55,7 +55,7 @@ const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
 };
 
 const DEFAULT_WORDPRESS_RESOLVE_OPTIONS = {
-  paths : process.env?.NODE_PATH.split(delimiter) ?? [process.cwd],
+  paths : process.env.NODE_PATH?.split(delimiter) ?? [`${process.cwd()}/node_modules`],
   packages : [
 
   ],
@@ -105,7 +105,9 @@ export default function ExposePlugin(
       const resolve_options = { ...DEFAULT_WORDPRESS_RESOLVE_OPTIONS, ...options.resolve ?? {}};
       const verbose = options.verbose ?? ['info', 'debug', 'verbose'].includes(build?.initialOptions)
 
-      console.log({ global_mappings });
+      if(verbose) {
+        console.log({ global_mappings });
+      }
 
       const filesToFilter = Object.keys(global_mappings).map(fileToFilter => fileToFilter.replace(/[^A-Za-z0-9_]/g, '\\$&'));
       const filter = new RegExp(`^(${filesToFilter.join("|")})$`);
