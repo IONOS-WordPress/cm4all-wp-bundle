@@ -1,6 +1,6 @@
 #!/usr/bin/env -S NODE_NO_WARNINGS=1 node --
 import { cwd } from "node:process";
-import { parseArgs, inspect } from "node:util";
+import { parseArgs } from "node:util";
 import { readFileSync } from "node:fs";
 import merge from 'lodash.merge';
 import bundle from "../src/wp-esbuild-bundle.js";
@@ -36,6 +36,9 @@ const ARGS = {
     'global-name' : {
       type: "string",
     },
+    analyze: {
+      type: "boolean"
+    },
   },
   allowPositionals: true,
   strict: false,
@@ -58,6 +61,7 @@ const arg_options = {
   footer: args.values.footer,
   watch: args.values.watch,
   //sass: {},
+  analyze: args.values.analyze ?? false,
 };
 
 if(args.values['global-name']) {
@@ -129,6 +133,10 @@ Options:
   (default=undefined) Sets the name of the global variable which is used to store the exports from the entry point.
   Can only be used if a single file gets transpiled (see https://esbuild.github.io/api/#global-name)
 
+--analyze=<boolean> 
+
+  (default=false) Generates an easy-to-read report about the contents of your bundle
+
 --outdir=<path>                 
   
   (default=cwd())This option sets the output directory for the build operation.
@@ -140,8 +148,5 @@ Example:
 If you want to declare more individual configurations, checkout the JS API.
 `);
 } else {
-  const metadata = await bundle(options);
-  if(options.verbose) {
-    console.log(metadata);
-  }
+  await bundle(options);
 }

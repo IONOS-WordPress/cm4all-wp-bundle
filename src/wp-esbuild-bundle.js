@@ -53,7 +53,12 @@ export default async function bundle(options) {
 
   const result = await esbuild.build(esbuild_options);
 
-  return await esbuild.analyzeMetafile(result.metafile, {
-    verbose: options.verbose,
-  });
+  if(options.analyze) {
+    const statistics = await esbuild.analyzeMetafile(result.metafile, {
+      // verbose: options.verbose,
+    });
+
+    console.log(statistics);
+  }
+  return result;
 }

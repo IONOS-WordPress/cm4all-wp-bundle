@@ -1,7 +1,5 @@
 import package_json from "../../package.json" assert { type: "json" };
-import esbuild from "esbuild";
-import { resolve, dirname, extname, join, normalize, delimiter, basename } from "node:path";
-import { readFile } from "node:fs/promises";
+import { dirname, join, normalize, delimiter, basename } from "node:path";
 import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
 import memoize from "lodash.memoize";
@@ -94,7 +92,7 @@ async function resolvePackage(packageName, resolveOptions, verbose) {
   return {};
 }
 
-export default function ExposePlugin(
+export default function WordpressPlugin(
   options = {},
 ) {
   const name = package_json.name + "-wordpress-plugin";
@@ -103,7 +101,7 @@ export default function ExposePlugin(
     setup(build) {
       const global_mappings = { ...DEFAULT_WORDPRESS_GLOBAL_MAPPINGS, ...options.mappings ?? {}};
       const resolve_options = { ...DEFAULT_WORDPRESS_RESOLVE_OPTIONS, ...options.resolve ?? {}};
-      const verbose = options.verbose ?? ['info', 'debug', 'verbose'].includes(build?.initialOptions)
+      const verbose = options.verbose ?? false; //['info', 'debug', 'verbose'].includes(build?.initialOptions)
 
       if(verbose) {
         console.log({ global_mappings });
