@@ -111,7 +111,7 @@ impex-js : $(SCRIPT_TARGETS)
 
 /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/dist/%.js : /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/%.mjs
 > $(eval $@_GLOBAL_NAME := $(basename $(notdir $@)))
-> cat << EOF | docker run -i --rm -v /home/lgersman/workspace/cm4all-wp-impex:/app lgersman-wickeltisch-wp-esbuild-bundle:latest --analyze --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $(patsubst /home/lgersman/workspace/cm4all-wp-impex/%,%, $<)
+> cat << EOF | docker run -i --rm --mount type=bind,source=/home/lgersman/workspace/cm4all-wp-impex,target=/app lgersman-wickeltisch-wp-esbuild-bundle:latest --analyze --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $(patsubst /home/lgersman/workspace/cm4all-wp-impex/%,%, $<)
 > { 
 >	  "wordpress" : { 
 >      "mappings" : { 
