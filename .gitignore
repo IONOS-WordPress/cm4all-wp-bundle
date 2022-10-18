@@ -3,4 +3,3 @@ dist
 .pnpm-debug.log
 build
 /docker/*.tgz
-/docker/package
