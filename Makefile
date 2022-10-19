@@ -90,13 +90,15 @@ docker/%.tgz : $(src/%) package.json LICENSE.md README.md
 # > touch -m ./package 
 
 .PHONY: docker 
-#HELP: * build artifacts
+#HELP: * build docker image
 docker: package.json docker/%.tgz .npmrc
 > PACKAGE_VERSION=$$(jq -r '.version' package.json)
 > NODEJS_VERSION=$$(grep -oP 'use-node-version=\K.*' .npmrc)
 # value can be alpine|bullseye|bullseye-slim
 > LINUX_DIST=bullseye-slim
-> DOCKER_SCAN_SUGGEST=false DOCKER_BUILDKIT=0 docker build --build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST -t $(DOCKER_IMAGE):latest -t $(DOCKER_IMAGE):$$PACKAGE_VERSION ./docker/
+> export DOCKER_SCAN_SUGGEST=false 
+> export DOCKER_BUILDKIT=1
+> docker build --progress=plain --build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST -t $(DOCKER_IMAGE):latest -t $(DOCKER_IMAGE):$$PACKAGE_VERSION -f ./docker/Dockerfile .
 > docker image ls $(DOCKER_IMAGE):$$PACKAGE_VERSION
 
 # .PHONY: docker-run
