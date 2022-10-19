@@ -75,7 +75,7 @@ async function resolvePackage(packageName, resolveOptions, verbose) {
       const module = await import(pathToFileURL(packageAlias));
       return module;
     } catch(ex) {
-      console.log(ex);
+      console.error(ex);
     }
   } else {
     for (const resolvePath of resolveOptions.paths) {
