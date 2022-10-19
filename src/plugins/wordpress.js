@@ -59,6 +59,7 @@ const DEFAULT_WORDPRESS_RESOLVE_OPTIONS = {
   ],
 };
 
+// @see https://github.com/nodejs/help/issues/3380#issuecomment-851076536
 const requireResolver = memoize((path) => createRequire(path));
 
 async function resolvePackage(packageName, resolveOptions, verbose) {
