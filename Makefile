@@ -92,13 +92,26 @@ docker/%.tgz : $(src/%) package.json LICENSE.md README.md
 .PHONY: docker 
 #HELP: * build docker image
 docker: package.json docker/%.tgz .npmrc
-> PACKAGE_VERSION=$$(jq -r '.version' package.json)
+> PACKAGE_VERSION=$$(jq -r '.version | values' package.json)
+> PACKAGE_AUTHOR="$$(jq -r '.author.name | values' package.json) <$$(jq -r '.author.email | values' package.json)>"
 > NODEJS_VERSION=$$(grep -oP 'use-node-version=\K.*' .npmrc)
 # value can be alpine|bullseye|bullseye-slim
 > LINUX_DIST=bullseye-slim
 > export DOCKER_SCAN_SUGGEST=false 
 > export DOCKER_BUILDKIT=1
-> docker build --progress=plain --build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST -t $(DOCKER_IMAGE):latest -t $(DOCKER_IMAGE):$$PACKAGE_VERSION -f ./docker/Dockerfile .
+> docker build \
+> 	--progress=plain \
+> 	--build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST \
+>		-t $(DOCKER_IMAGE):latest \
+> 	-t $(DOCKER_IMAGE):$$PACKAGE_VERSION \
+>		--label "maintainer=$$PACKAGE_AUTHOR" \
+> 	--label "org.opencontainers.image.title=$(DOCKER_MDBOOK_IMAGE)" \
+> 	--label "org.opencontainers.image.description=$$(jq -r '.description | values' package.json)" \
+> 	--label "org.opencontainers.image.authors=$$PACKAGE_AUTHOR" \
+> 	--label "org.opencontainers.image.url=$$(jq -r '.homepage | values' package.json)" \
+> 	--label "org.opencontainers.image.vendor=https://cm4all.com" \
+> 	--label "org.opencontainers.image.licenses=$$(jq -r '.license | values' package.json)" \
+> 	-f ./docker/Dockerfile .
 > docker image ls $(DOCKER_IMAGE):$$PACKAGE_VERSION
 
 # .PHONY: docker-run
