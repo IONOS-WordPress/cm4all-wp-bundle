@@ -51,6 +51,26 @@ export default async function bundle(options) {
     console.log("esbuild.bundle(...) options = %s", JSON.stringify(esbuild_options, null, 2));
   }
 
+  if(esbuild_options.watch === true) {
+    esbuild_options.watch = {
+      async onRebuild(error, result) {
+        if (error) {
+          console.error("[watch] build failed:", error);
+        } else {
+          if(options.analyze) {
+            const statistics = await esbuild.analyzeMetafile(result.metafile, {
+              // verbose: options.verbose,
+            });
+        
+            console.log(statistics);
+          } else {
+            console.log("[watch] build succeeded:", Object.keys(result.metafile.outputs));
+          }
+        }
+      },
+    };
+  }
+
   const result = await esbuild.build(esbuild_options);
 
   if(options.analyze) {
