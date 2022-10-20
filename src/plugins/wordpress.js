@@ -1,8 +1,5 @@
 import package_json from "../../package.json" assert { type: "json" };
-import { dirname, join, normalize, delimiter, basename } from "node:path";
-import { createRequire } from "node:module";
-import { pathToFileURL } from "node:url";
-import memoize from "lodash.memoize";
+import { join, normalize } from "node:path";
 
 const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   '@wordpress/a11y' : 'window.wp.a11y',
@@ -52,47 +49,6 @@ const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   'react-dom': 'window.ReactDom',
 };
 
-const DEFAULT_WORDPRESS_RESOLVE_OPTIONS = {
-  paths : process.env.NODE_PATH?.split(delimiter) ?? [`${process.cwd()}/node_modules`],
-  packages : [
-
-  ],
-};
-
-// @see https://github.com/nodejs/help/issues/3380#issuecomment-851076536
-const requireResolver = memoize((path) => createRequire(path));
-
-async function resolvePackage(packageName, resolveOptions, verbose) {
-  const packageAlias = resolveOptions.packages[packageName];
-  if(packageAlias) {
-    const { resolve } = requireResolver(dirname(packageAlias));
-    try {
-      const module = await import(pathToFileURL(resolve(basename(packageAlias))));
-      return module;
-    } catch {}
-
-    try {
-      const module = await import(pathToFileURL(packageAlias));
-      return module;
-    } catch(ex) {
-      console.error(ex);
-    }
-  } else {
-    for (const resolvePath of resolveOptions.paths) {
-      const { resolve } = requireResolver(resolvePath);
-      try {
-        return import(pathToFileURL(resolve(packageName)));
-      } catch {}
-    }
-  }
-
-  if(verbose) {
-    console.warn('Could not resolve package(=%s) using resolve options(=%j)', packageName, resolveOptions);
-  }
-
-  return {};
-}
-
 export default function WordpressPlugin(
   options = {},
 ) {
@@ -101,7 +57,6 @@ export default function WordpressPlugin(
     name,
     setup(build) {
       const global_mappings = { ...DEFAULT_WORDPRESS_GLOBAL_MAPPINGS, ...options.mappings ?? {}};
-      const resolve_options = { ...DEFAULT_WORDPRESS_RESOLVE_OPTIONS, ...options.resolve ?? {}};
       const verbose = options.verbose ?? false; //['info', 'debug', 'verbose'].includes(build?.initialOptions)
 
       if(verbose) {
@@ -130,27 +85,8 @@ export default function WordpressPlugin(
       });
 
       build.onLoad({ filter: /.*/, namespace: name }, async (args) => {
-        const source = [`export default ${global_mappings[args.path]};`];
-
-        // try to evaluate the named exports
-        const result = args.pluginData || await build.resolve(args.path);
-        if (result.errors.length == 0) {
-          const resolvedPackage = await resolvePackage(result.path, resolve_options, verbose);
-
-          const exports = Object.keys(resolvedPackage.default || resolvedPackage)
-            .filter(
-              (exportLiteral) =>
-                !["default", "__esModule"].includes(exportLiteral),
-            )
-            .join(", ");
-
-          if(exports) {
-            source.push(`export const { ${exports} } = ${global_mappings[args.path]};`);
-          }
-        }
-
         return {
-          contents : source.join('\n'),
+          contents: `module.exports = ${global_mappings[args.path]};`,
         };
       });
     },
