@@ -88,9 +88,9 @@ docker/%.tgz : $(src/%) package.json LICENSE.md README.md
 # > rm $$TGZ
 # > touch -m ./package 
 
-.PHONY: npm-deploy
-#HELP: * deploy package to npm
-npm-deploy: test
+.PHONY: npm-publish
+#HELP: * publish package to npm
+npm-publish: test
 > pnpm publish --no-git-checks
 
 .PHONY: docker-image
