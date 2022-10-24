@@ -1,12 +1,19 @@
-# Introduction
+**🚧🚧 This project is in initial stage and under heavy development! Source code and API may change often. 🚧🚧**
 
+**Introduction**
+
+References to `@wordpress/*` and 'react' NPM packages will be transformed to their matching global pendants (`window.wp.*` and `window.react`). JSX/PostCSS/SCSS support is built-in.
 # Development
 
-- ensure you have NodeJS > v16.13 installed (example using nvm: `nvm install v16.13`). 
+## requirements
 
-- enable corepack : `corepack enable`
+- `pnpm`
 
-- install dependencies : `corepack pnpm install`
+- `make`
+
+- `docker`
+
+- `jq`
 
 ## debugging
 
@@ -18,21 +25,19 @@
 
   ```
   // debug the code runned during package.json "test" script
-  corepack pnpm run debug test
+  pnpm run debug test
 
   // debug the code runned during package.json "start" script
-  corepack pnpm run debug start
+  pnpm run debug start
   ```
 
 - using vscode's integrated javascript debug terminal: 
 
   - open a javascript debug terminal : (CTRL-SHIFT-P) `Debug: Javascript Debug Terminal`
 
-  - ensure a `corepack` enabled nodejs version is active (using `nvm use v16.13.0` for example)
-
   - set some breakpoints in source files
 
-  - execute the script to debug in the Javascript Debug Terminal (Example : `corepack pnpm start`)
+  - execute the script to debug in the Javascript Debug Terminal (Example : `pnpm start`)
 
 ### tests
 
@@ -44,16 +49,22 @@
 
 #### debugging tests
 
-executing `PWDEBUG=1 corepack pnpm test` will open up the playwright debugger
+executing `PWDEBUG=1 pnpm test` will open up the playwright debugger
 # Usage
 
+@TODO:
 ## CLI
 
+@TODO:
 ## JS API
+
+@TODO:
 
 - `bundle(options)`
 
 ### Options
+
+@TODO:
 
 - `boolean` `verbose` (optional, default=`false`): enabling verbose mode results in more output,
 - `string}` `mode` (optional, default=`production`): possible values are `development` and `production`

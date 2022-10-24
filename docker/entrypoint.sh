@@ -14,4 +14,4 @@ if [[ ! -d /app ]]; then
   exit 1
 fi 
 
-cd /app && /usr/bin/env -S NODE_NO_WARNINGS=1 NODE_PATH=/app/node_modules node $(which wp-esbuild-bundle-cli) $@
+cd /app && /usr/bin/env -S NODE_NO_WARNINGS=1 NODE_PATH=/app/node_modules node $(which cm4all-wp-bundle) $@

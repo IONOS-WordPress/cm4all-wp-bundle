@@ -1,7 +1,7 @@
 {
-  "name": "@lgersman-wickeltisch/wp-esbuild-bundle",
+  "name": "cm4all-wp-bundle",
   "version": "1.0.2",
-  "description": "A js/css resources bundler targeting WordPress Gutenberg. References to `@wordpress/*` NPM packages will be transformed to their matching global pendants (`window.wp.*`). JSX/PostCSS/SCSS support is built-in.",
+  "description": "A nano-sized high performance js/css resource bundler targeting WordPress Gutenberg. Minimal dependencies. Made with esbuild ❤️.",
   "main": "index.js",
   "engines": {
     "node": ">=18.8",
@@ -12,16 +12,17 @@
   "scripts": {
     "_preinstall": "echo yes | npx only-allow pnpm",
     "test": "NODE_NO_WARNINGS=1 node --test test/test-*.js",
-    "test:start": "./bin/wp-esbuild-bundle-cli.js --verbose --outdir=./dist --mode=development --wordpress.mappings[\"./mylib.js\"]=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
-    "start": "./bin/wp-esbuild-bundle-cli.js",
+    "test:start": "./bin/cm4all-wp-bundle-cli.js --verbose --outdir=./dist --mode=development --wordpress.mappings[\"./mylib.js\"]=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
+    "start": "./bin/cm4all-wp-bundle-cli.js",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --",
     "check-updates": "pnpm update --interactive"
   },
+  "homepage" : "https://github.com/IONOS-WordPress/cm4all-wp-bundle",
   "files": [
     "src/**/*"
   ],
   "bin": {
-    "wp-esbuild-bundle-cli": "bin/wp-esbuild-bundle-cli.js"
+    "cm4all-wp-bundle": "bin/cm4all-wp-bundle-cli.js"
   },
   "publishConfig": {
     "access": "public"

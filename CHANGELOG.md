@@ -1,4 +1,4 @@
-# @lgersman-wickeltisch/wp-esbuild-bundle
+# cm4all-wp-bundle
 
 ## 1.0.2
 
