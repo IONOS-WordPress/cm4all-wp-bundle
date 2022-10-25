@@ -1,43 +1,49 @@
 #!/usr/bin/env -S NODE_NO_WARNINGS=1 node --
-import { cwd } from "node:process";
-import { parseArgs } from "node:util";
-import { readFileSync } from "node:fs";
+/* eslint-disable no-console */
+import { cwd } from 'node:process';
+import { parseArgs } from 'node:util';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import { readFileSync } from 'node:fs';
 import merge from 'lodash.merge';
-import bundle from "../src/wp-esbuild-bundle.js";
+import bundle from '../src/cm4all-wp-bundle.js';
 
-import package_json from '../package.json' assert {type: 'json'}
+// we cannot use
+// import package_json from '../package.json' assert { type: 'json' };
+// since import...assert its not (yet) supported by eslint
+const package_json = JSON.parse(readFileSync(dirname(fileURLToPath(import.meta.url)) + '/../package.json'));
 
 const ARGS = {
   options: {
     watch: {
-      type: "boolean",
-      short: "w",
+      type: 'boolean',
+      short: 'w',
     },
     verbose: {
-      type: "boolean",
-      short: "v",
+      type: 'boolean',
+      short: 'v',
     },
     mode: {
-      type: "string",
+      type: 'string',
     },
     target: {
-      type: "string",
-      multiple:true,
+      type: 'string',
+      multiple: true,
     },
     banner: {
-      type: "string",
+      type: 'string',
     },
     footer: {
-      type: "string",
+      type: 'string',
     },
     outdir: {
-      type: "string",
+      type: 'string',
     },
-    'global-name' : {
-      type: "string",
+    'global-name': {
+      type: 'string',
     },
     analyze: {
-      type: "boolean"
+      type: 'boolean',
     },
   },
   allowPositionals: true,
@@ -46,13 +52,13 @@ const ARGS = {
 
 const args = parseArgs(ARGS);
 
-if(args.values.verbose) {
-  console.log("args = %s", JSON.stringify(args, null, 2));
+if (args.values.verbose) {
+  console.log('args = %s', JSON.stringify(args, null, 2));
 }
 // @TODO : apply defaults after reading config from stdin
 const arg_options = {
   verbose: args.values.verbose,
-  mode: args.values.mode === "development" ? "development" : "production",
+  mode: args.values.mode === 'development' ? 'development' : 'production',
   entryPoints: args.positionals,
   //wordpress: {},//extractPrefixedOptions(args.values, "wordpress."),
   outdir: args.values.outdir ?? cwd(),
@@ -64,37 +70,37 @@ const arg_options = {
   analyze: args.values.analyze ?? false,
 };
 
-if(args.values['global-name']) {
+if (args.values['global-name']) {
   arg_options['global-name'] = args.values['global-name'];
 }
 
 let stdinContent = '{}';
 try {
   stdinContent = readFileSync(process.stdin.fd, 'utf-8');
-  if(args.values.verbose) {
-    console.log("readed stdin content = %s", stdinContent);
+  if (args.values.verbose) {
+    console.log('readed stdin content = %s', stdinContent);
   }
 } catch {
-  if(args.values.verbose) {
-    console.log("Skip reading config from stdin : no content available from stdin");
+  if (args.values.verbose) {
+    console.log('Skip reading config from stdin : no content available from stdin');
   }
 }
 
 const options = {};
 try {
   merge(options, JSON.parse(stdinContent));
-} catch(ex) {
-  console.error("stdin content is not valid json : %s\n%s", ex.message, stdinContent);
+} catch (ex) {
+  console.error('stdin content is not valid json : %s\n%s', ex.message, stdinContent);
   process.exit(-1);
 }
 
 merge(options, arg_options);
 
-if(options.verbose) {
-  console.log("wp-esbuild-bundle options = %s", JSON.stringify(options, null, 2));
+if (options.verbose) {
+  console.log('cm4all-wp-bundle options = %s', JSON.stringify(options, null, 2));
 }
 
-if(args.values.help || !args.positionals.length) {
+if (args.values.help || !args.positionals.length) {
   console.log(`${package_json.name} ${package_json.version}
 
 ${package_json.description}
@@ -143,7 +149,7 @@ Options:
 
 Bundle options like package mappings can be specified using a JSON config provided via stdin
 Example:  
-  echo '{ "wordpress" : { "mappings" : { "@cm4all/foo" : "window.cm4all.foo" } }}' | wp-esbuild-bundle-cli --outdir dist foo.js
+  echo '{ "wordpress" : { "mappings" : { "@cm4all/foo" : "window.cm4all.foo" } }}' | cm4all-wp-bundle-cli --outdir dist foo.js
 
 If you want to declare more individual configurations, checkout the JS API.
 `);

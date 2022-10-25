@@ -1,21 +1,24 @@
 import { Button } from '@wordpress/components';
 import { close } from '@wordpress/icons';
 
-import settings from "./figure.json" assert { type: "json" };
+// we cannot use
+// import settings from './figure.json' assert { type: 'json' };
+// since import...assert its not (yet) supported by eslint
 
-import "./figure.scss";
+import './figure.scss';
 
 import * as mylib from './mylib.js';
 
 import { foo, bar } from './mylib.js';
 
-import FigCaption from "./figcaption.js";
+import FigCaption from './figcaption.js';
 
 import * as Paragraph from './paragraph.js';
 
+// eslint-disable-next-line react/prop-types
 export function Figure({ src, caption }) {
-  const raw = settings;
-  console.log(raw);
+  // const raw = settings;
+  // console.log(raw);
   return (
     <>
       <Button icon={close}></Button>
@@ -28,7 +31,8 @@ export function Figure({ src, caption }) {
 }
 
 export default function foobar() {
-  console.log("huhu");
+  // eslint-disable-next-line no-console
+  console.log('huhu');
   mylib.foo();
   mylib.bar();
 }

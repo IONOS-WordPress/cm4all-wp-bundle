@@ -24,12 +24,12 @@
   Example usage:
 
   ```sh
-  cat ./myconfig.json | wp-esbuild-bundle-cli --outfile dist/foo in.js
+  cat ./myconfig.json | cm4all-wp-bundle-cli --outfile dist/foo in.js
 
-  echo '{ "wordpress" : { "mappings" : { "@cm4all/foo" : "window.cm4all.foo" } }}' | wp-esbuild-bundle-cli --outdir dist foo.js
+  echo '{ "wordpress" : { "mappings" : { "@cm4all/foo" : "window.cm4all.foo" } }}' | cm4all-wp-bundle-cli --outdir dist foo.js
   ```
 
-- 2fef09b: add docker image providing wp-esbuild-bundle without installing it as dependency
+- 2fef09b: add docker image providing cm4all-wp-bundle without installing it as dependency
 
 ## 1.0.1
 
