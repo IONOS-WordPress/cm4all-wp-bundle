@@ -63,8 +63,8 @@ DOCKER_IMAGE := lgersman/$(shell jq -r '.name | values' package.json)
 
 # this target triggers pnpm to download/install the required nodejs if not yet available 
 $(NODE):
-> @$(PNPM) exec node --version 1&>/dev/null
-> touch -m $@
+# > @$(PNPM) exec node --version 1&>/dev/null
+# > touch -m $@
 
 pnpm-lock.yaml: package.json 
 >	$(PNPM) install --lockfile-only
@@ -89,9 +89,12 @@ docker/%.tgz : $(src/%) package.json LICENSE.md README.md
 # > touch -m ./package 
 
 .PHONY: npm-publish
-#HELP: * publish package to npm
-npm-publish: test
-> pnpm publish --no-git-checks
+#HELP: * publish package to npm regisry
+npm-publish: #test
+# bash does not allow declaring env variables containing "/" 
+> env "npm_config_//registry.npmjs.org/:_authtoken=$(NPM_TOKEN)" $(SHELL) -c 'env | grep npm_ && pnpm publish --no-git-checks --report-summary'
+# > pnpm publish --no-git-checks --report-summary
+# NODE_AUTH_TOKEN
 
 .PHONY: docker-image
 #HELP: * build docker image

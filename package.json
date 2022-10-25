@@ -1,5 +1,5 @@
 {
-  "name": "cm4all-wp-bundle",
+  "name": "xx-cm4all-wp-bundle",
   "version": "1.0.2",
   "description": "A nano-sized high performance js/css resource bundler targeting WordPress Gutenberg. Minimal dependencies. Made with esbuild ❤️.",
   "main": "index.js",
