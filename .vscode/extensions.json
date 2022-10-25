@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-docker",
+    "formulahendry.vscode-mysql",
+
+    // taken from https://github.com/antfu/vscode-settings/blob/main/.vscode/extensions.json
+    // "usernamehw.errorlens",
+    "streetsidesoftware.code-spell-checker",
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": false,
+    "source.fixAll.eslint": true, // this allows ESLint to auto fix on save
+    "source.organizeImports": false
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "json5"
+  ],
+  // enable globally (here: format on save)
+  "editor.formatOnSave": true,
+  // enable per-language (here: Prettier as formatter)
+  "intelephense.files.exclude": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/build/**"
+  ],
+  "search.exclude": {
+    "**/.git": true,
+    "**/.github": true,
+    "**/.pnpm": true,
+    "**/node_modules": true,
+    "**/package-lock.json": true,
+    "**/pnpm-lock.yaml": true,
+    "**/build/**": true
+  },
+  "git.ignoreLimitWarning": true,
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "eslint.codeAction.showDocumentation": {
+    "enable": true
+  },
+  "eslint.packageManager": "pnpm",
+  "cSpell.allowCompoundWords": true,
+  "cSpell.language": "en,en-US",
+  "cSpell.ignoreWords": ["mdbook"]
+}

@@ -1,0 +1,39 @@
+# url: https://json.schemastore.org/eslintrc.json
+extends:
+  - prettier
+plugins:
+  - prettier
+  - react
+  - react-hooks
+  - simple-import-sort
+  - import
+
+# tells ESLint not to use ancestor directories.
+# see https://github.com/eslint/eslint/issues/6630
+root: true
+
+rules:
+  prettier/prettier:
+    - error
+  # checks rules of Hooks
+  react-hooks/rules-of-hooks:
+    - error
+  # checks effect dependencies
+  react-hooks/exhaustive-deps:
+    - warn
+  react/prop-types:
+    - warn
+  import/no-unresolved:
+    - warn
+  no-console:
+    - warn
+parserOptions:
+  ecmaVersion: latest
+  sourceType: module
+settings:
+  react:
+    version: detect
+env:
+  shared-node-browser: true
+  browser: true
+  node: true

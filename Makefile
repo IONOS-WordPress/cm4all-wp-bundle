@@ -135,7 +135,7 @@ docker-image: package.json docker/%.tgz .npmrc
 > docker image ls $(DOCKER_IMAGE):$$PACKAGE_VERSION
 
 .PHONY: docker-image-push
-#HELP: * push docker image to docker hub\n(docker login using token or password required before)
+#HELP: * push docker image to docker hub\n  (docker login using token or password required before)
 docker-image-push: docker-image 
 # > docker login --username [username] and docker access-token or real password must be initially before push
 > docker push --all-tags $(DOCKER_IMAGE)
@@ -171,6 +171,19 @@ docker-run: docker
 
 SCRIPT_SOURCES := $(wildcard /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/*.mjs)
 SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
+
+.PHONY: lint
+#HELP: * lint sources
+lint: node_modules
+> pnpm prettier --ignore-unknown --check .
+> pnpm eslint --no-error-on-unmatched-pattern packages/**/src/**/*.{js,jsx}
+
+.PHONY: lint-fix
+#HELP: * lint sources and fix them where possible
+lint-fix: node_modules
+> pnpm prettier --check --write .
+> pnpm eslint --no-error-on-unmatched-pattern --fix .
+> pnpm stylelint --allow-empty-input --fix .
 
 .PHONY: impex-js
 impex-js : $(SCRIPT_TARGETS)
