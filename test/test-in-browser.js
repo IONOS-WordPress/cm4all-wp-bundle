@@ -4,7 +4,6 @@ import { chromium } from 'playwright';
 import bundle from "../src/wp-esbuild-bundle.js";
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { readFile } from 'node:fs/promises';
 
 describe('test in browser', () => {
 
