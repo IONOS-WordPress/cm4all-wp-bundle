@@ -247,7 +247,7 @@ distclean: clean
 > test -f $(NODE) && $(PNPM) env remove --global $(NODE_VERSION) ||:
 
 .PHONY: update 
-#HELP: * update dependencies
+#HELP: * update dependencies interactively
 update: 
 > $(PNPM) update --latest --interactive
 

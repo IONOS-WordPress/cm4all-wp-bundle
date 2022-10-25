@@ -3,6 +3,7 @@
 **Introduction**
 
 References to `@wordpress/*` and 'react' NPM packages will be transformed to their matching global pendants (`window.wp.*` and `window.react`). JSX/PostCSS/SCSS support is built-in.
+
 # Development
 
 ## requirements
@@ -17,11 +18,11 @@ References to `@wordpress/*` and 'react' NPM packages will be transformed to the
 
 ## debugging
 
-- *using `ndb` wrapped in the package.json `debug` script: 
+- using `ndb` wrapped in the package.json `debug` script:
 
   - set some breakpoints in your code using the `debugger` statement
 
-  Examples: 
+  Examples:
 
   ```
   // debug the code runned during package.json "test" script
@@ -31,7 +32,7 @@ References to `@wordpress/*` and 'react' NPM packages will be transformed to the
   pnpm run debug start
   ```
 
-- using vscode's integrated javascript debug terminal: 
+- using vscode's integrated javascript debug terminal:
 
   - open a javascript debug terminal : (CTRL-SHIFT-P) `Debug: Javascript Debug Terminal`
 
@@ -50,12 +51,15 @@ References to `@wordpress/*` and 'react' NPM packages will be transformed to the
 #### debugging tests
 
 executing `PWDEBUG=1 pnpm test` will open up the playwright debugger
+
 # Usage
 
 @TODO:
+
 ## CLI
 
 @TODO:
+
 ## JS API
 
 @TODO:
