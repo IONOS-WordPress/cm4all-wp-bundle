@@ -176,14 +176,13 @@ SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
 #HELP: * lint sources
 lint: node_modules
 > pnpm prettier --ignore-unknown --check .
-> pnpm eslint --no-error-on-unmatched-pattern packages/**/src/**/*.{js,jsx}
+> pnpm eslint --no-error-on-unmatched-pattern .
 
 .PHONY: lint-fix
 #HELP: * lint sources and fix them where possible
 lint-fix: node_modules
 > pnpm prettier --check --write .
 > pnpm eslint --no-error-on-unmatched-pattern --fix .
-> pnpm stylelint --allow-empty-input --fix .
 
 .PHONY: impex-js
 impex-js : $(SCRIPT_TARGETS)

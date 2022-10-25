@@ -4,23 +4,11 @@
     "source.fixAll.eslint": true, // this allows ESLint to auto fix on save
     "source.organizeImports": false
   },
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "html",
-    "markdown",
-    "json",
-    "jsonc",
-    "json5"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "html", "markdown", "json", "jsonc", "json5"],
   // enable globally (here: format on save)
   "editor.formatOnSave": true,
   // enable per-language (here: Prettier as formatter)
-  "intelephense.files.exclude": [
-    "**/.git/**",
-    "**/node_modules/**",
-    "**/build/**"
-  ],
+  "intelephense.files.exclude": ["**/.git/**", "**/node_modules/**", "**/build/**"],
   "search.exclude": {
     "**/.git": true,
     "**/.github": true,
@@ -35,7 +23,7 @@
   "eslint.codeAction.showDocumentation": {
     "enable": true
   },
-  "eslint.packageManager": "pnpm",
+  // "eslint.packageManager": "pnpm",
   "cSpell.allowCompoundWords": true,
   "cSpell.language": "en,en-US",
   "cSpell.ignoreWords": ["mdbook"]
