@@ -1,4 +1,4 @@
-**🚧🚧 This project is in initial stage and under heavy development! Source code and API may change often. 🚧🚧**
+**🚧🚧 This project is in initial stage and under heavy development! Code and API may change often. 🚧🚧**
 
 **Introduction**
 
