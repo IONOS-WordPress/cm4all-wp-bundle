@@ -11,7 +11,9 @@ plugins:
 # tells ESLint not to use ancestor directories.
 # see https://github.com/eslint/eslint/issues/6630
 root: true
-
+# tell vscode to not run eslint on markdown files
+ignorePatterns:
+  - '**/*.md'
 rules:
   prettier/prettier:
     - error
