@@ -76,11 +76,20 @@ node_modules: pnpm-lock.yaml
 >	$(PNPM) install --frozen-lockfile
 > @touch -m node_modules 
 
+# package-lock.json: $(NODE)
+# # npm install call will fail if node_modules are installed by pnpm 
+# > rm -rf ./node_modules
+# # npm install 
+# > pnpm exec npm install --no-fund --package-lock-only --omit=dev --omit=optional --omit=peer --force
+# > touch -m package-lock.json
+
 .PHONY: build 
 #HELP: * build artifacts
 build: node_modules $(NODE)
 
 docker/%.tgz : $(src/%) package.json LICENSE.md README.md 
+# delete older tgz files to prevent adding them to the docker image (see Dockerfile)
+> rm ./docker/*.tgz
 # unfortunately we cannot use pnpm deploy since this action requires pnpm workspaces enabled 
 # > TGZ=$$($(PNPM) pack --pack-destination ./docker) && tar -xvf ./docker/$$TGZ --directory ./docker
 > $(PNPM) pack --pack-destination ./docker
@@ -155,9 +164,10 @@ docker-image-deploy: docker-image-push
 > | jq .
 
 
-# .PHONY: docker-run
-# docker-run: docker
-# > docker run -it --rm $(DOCKER_IMAGE):latest bash
+.PHONY: docker-run
+#HELP: start docker container with bash as entrypoint
+docker-run: docker
+> docker run -it --rm --mount type=bind,source=/home/lgersman/workspace/cm4all-wp-impex,target=/app --entrypoint=bash $(DOCKER_IMAGE):latest
 
 SCRIPT_SOURCES := $(wildcard /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/*.mjs)
 SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
