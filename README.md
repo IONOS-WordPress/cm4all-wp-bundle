@@ -22,7 +22,7 @@ If you are developing Javascript/CSS for the [WordPress](https://make.wordpress.
 
 The package can be used as NPM package [`cm4all-wp-bundle`](https://www.npmjs.com/package/cm4all-wp-bundle) or preinstalled in [Docker](https://docs.docker.com/) image [`'lgersman/cm4all-wp-bundle'`](https://hub.docker.com/repository/docker/lgersman/cm4all-wp-bundle).
 
-> If you are not planning to use additional [esbuild plugins](https://esbuild.github.io/plugins/) I would suggest you to use the [`'lgersman/cm4all-wp-bundle'`](https://hub.docker.com/repository/docker/lgersman/cm4all-wp-bundle) [Docker](https://docs.docker.com/) image since it minimizes the hassle (NodeJS version/package dependency bloating) of your project.
+> If you are not planning to use additional [esbuild plugins](https://esbuild.github.io/plugins/) I would suggest you to use the [`'lgersman/cm4all-wp-bundle'`](https://hub.docker.com/repository/docker/lgersman/cm4all-wp-bundle) [Docker](https://docs.docker.com/) image since it minimizes the hassle (NodeJS version/package dependency bloating) of your project configuration.
 
 ## Docker
 
