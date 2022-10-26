@@ -169,9 +169,6 @@ docker-image-deploy: docker-image-push
 docker-run: docker
 > docker run -it --rm --mount type=bind,source=/home/lgersman/workspace/cm4all-wp-impex,target=/app --entrypoint=bash $(DOCKER_IMAGE):latest
 
-SCRIPT_SOURCES := $(wildcard /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/*.mjs)
-SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
-
 .PHONY: lint
 #HELP: * lint sources
 lint: node_modules
@@ -183,6 +180,9 @@ lint: node_modules
 lint-fix: node_modules
 > pnpm prettier --check --write .
 > pnpm eslint --no-error-on-unmatched-pattern --fix .
+
+SCRIPT_SOURCES := $(wildcard /home/lgersman/workspace/cm4all-wp-impex/plugins/cm4all-wp-impex/src/*.mjs)
+SCRIPT_TARGETS := $(subst /src/,/dist/,$(SCRIPT_SOURCES:.mjs=.js))
 
 .PHONY: impex-js
 impex-js : $(SCRIPT_TARGETS)

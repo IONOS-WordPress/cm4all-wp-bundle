@@ -1,0 +1,8 @@
+{
+  "$id": "https://json-schema.org/draft/2020-12/output/schema",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "cm4all-wp-bundle configuration",
+  "description": "@TODO: ",
+  "properties": {},
+  "type": "object"
+}
