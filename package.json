@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/IONOS-WordPress/cm4all-wp-bundle",
   "files": [
-    "src/**/*"
+    "src/**/*",
+    "bundle-configuration.schema.json"
   ],
   "bin": {
     "cm4all-wp-bundle": "bin/cm4all-wp-bundle-cli.js"
