@@ -1,5 +1,3 @@
-🚧 This project under development. Code and API may change. 🚧
-
 # Introduction
 
 `cm4all-wp-bundle` is a nano-sized JS/CSS bundler for [WordPress](https://make.wordpress.org/)/[Gutenberg](https://wordpress.org/gutenberg/) related projects.
