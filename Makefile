@@ -11,7 +11,7 @@ endif
 .RECIPEPREFIX = >
 
 # alwas use bash as shell (to get <<< and stuff working), otherwise sh would be used by default
-SHELL := $(shell which bash)
+SHELL != which bash
 # use bash strict mode o that make will fail if a bash statement fails
 .SHELLFLAGS := -eu -o pipefail -c
 # debug make shell execution
