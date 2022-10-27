@@ -2,7 +2,52 @@
   "$id": "https://json-schema.org/draft/2020-12/output/schema",
   "$schema": "http://json-schema.org/draft-07/schema",
   "title": "cm4all-wp-bundle configuration",
-  "description": "@TODO: ",
-  "properties": {},
+  "description": "cm4all-wp-bundle JSON configuration",
+  "additionalProperties": false,
+  "properties": {
+    "wordpress": {
+      "type": "object",
+      "additionalProperties": false,
+      "examples": [
+        {
+          "mapping": {
+            "@foo/bar": "myapp.foo.bar",
+            "debug": "myapp.debug"
+          }
+        }
+      ],
+      "properties": {
+        "mappings": {
+          "type": "object",
+          "description": "If true the eslint wordpress plugin will log more informations",
+          "examples": [],
+          "additionalProperties": true
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "If true the eslint wordpress plugin will log more informations"
+        }
+      }
+    },
+    "sass": {
+      "type": "object",
+      "description": "Please refer to https://sass-lang.com/documentation/js-api/interfaces/Options for all possible settings",
+      "additionalProperties": true
+    },
+    "eslint": {
+      "type": "object",
+      "examples": [
+        {
+          "loader": {
+            ".png": "dataurl",
+            ".svg": "text"
+          },
+          "drop": ["console", "debugger"]
+        }
+      ],
+      "description": "Please refer to https://esbuild.github.io/api/#simple-options for all possible settings",
+      "additionalProperties": true
+    }
+  },
   "type": "object"
 }
