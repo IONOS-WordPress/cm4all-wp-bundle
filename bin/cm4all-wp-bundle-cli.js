@@ -55,7 +55,7 @@ const args = parseArgs(ARGS);
 if (args.values.verbose) {
   console.log('args = %s', JSON.stringify(args, null, 2));
 }
-// @TODO : apply defaults after reading config from stdin
+
 const arg_options = {
   verbose: args.values.verbose,
   mode: args.values.mode === 'development' ? 'development' : 'production',
@@ -88,7 +88,13 @@ try {
 
 const options = {};
 try {
-  merge(options, JSON.parse(stdinContent));
+  const stdinJSON = JSON.parse(stdinContent);
+
+  // drop JSON schema references
+  delete stdinJSON['$id'];
+  delete stdinJSON['$schema'];
+
+  merge(options, stdinJSON);
 } catch (ex) {
   console.error('stdin content is not valid json : %s\n%s', ex.message, stdinContent);
   process.exit(-1);
