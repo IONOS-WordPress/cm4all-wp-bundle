@@ -218,8 +218,159 @@ You can provide the advanced configuration
   EOF
   ```
 
-@TODO: json schema
+### Advanced JSON Schema structure
+
+The JSON provided via STDIN must match the `cm4all-wp-bundle` JSON Schema (can be found here : [bundle-configuration.schema.json](blob/develop/bundle-configuration.schema.json)).
+
+The `cm4all-wp-bundle` JSON Schema declares 3 top level properties :
+
+- `"wordpress" : { ... }`
+
+  This property may be used to define additional _import-package_ => _global_variable_ mappings using the sub property `"mappings"`. Using this property you can declare additional _import-package_ => _global_variable_ mappings to apply during transpilation. Each entry in `"mappings"` declares a single mappings where the _key_ is the _import-package_ and the _value_ the global variable to map to.
+
+  See https://github.com/IONOS-WordPress/cm4all-wp-bundle/blob/develop/src/plugins/wordpress.js to get a picture of all by default mapped packages.
+
+  An example:
+
+  Suppose you want to use NPM package [`"debug"`](https://www.npmjs.com/package/debug). But this package should not be bundled in your code. And you've already managed that this package is already in the browser in global variable `window.myapp.debug`;
+
+  This scenario can simply expressed using the Advanced JSON Schema configuration :
+
+  ```json
+  {
+    "wordpress": {
+      "mappings": {
+        "debug": "myapp.debug"
+      }
+    }
+  }
+  ```
+
+  _The mapping target will automatically be prefixed with `"window."`_
+
+- `"sass" : { ... }`
+
+  The `"sass"` property can be used to express a custom sass configuration to the bundler.
+
+  An example :
+
+  You have some shared Sass files located somewhere else in your project repository and use them in your code :
+
+  ```css
+  ...
+  /*
+    this file is located in ./src/components/my-component.scss
+  */
+  ...
+  /*
+    common.sass is located in ./shared-css/
+  */
+  @import common.sass;
+  ...
+  ```
+
+  To get the Sass compiler a chance to find these shared files you could use the Sass option [`"loadPaths"`](https://sass-lang.com/documentation/js-api/interfaces/Options#loadPaths)
+
+  ```json
+  {
+    "sass": {
+      "loadPaths": ["./shared-css/"]
+    }
+  }
+  ```
+
+  _You can provide Sass any configuration property as stated in the [Sass compiler documentation](https://sass-lang.com/documentation/js-api)._
+
+- `"eslint" : { ... }`
+
+  Using this property it's possible to customize the `esbuild's` transpilation process.
+
+  An example:
+
+  Suppose you want
+
+  - configuring a loader for a given file type lets you load that file type with an import statement or a require call. For example, configuring the `.png` file extension to use the data URL loader means importing a `.png` file gives you a data URL containing the contents of that image:
+
+    ```js
+    import url from './example.png';
+    let image = new Image();
+    image.src = url;
+    document.body.appendChild(image);
+
+    import svg from './example.svg';
+    let doc = new DOMParser().parseFromString(svg, 'application/xml');
+    let node = document.importNode(doc.documentElement, true);
+    document.body.appendChild(node);
+    ```
+
+    The above code can be bundled using the the following advanced configuration :
+
+    ```json
+    {
+      "eslint": {
+        "loader": {
+          ".png": "dataurl",
+          ".svg": "text"
+        }
+      }
+    }
+    ```
+
+  - let's add another condition : We want accidental `console.*` and `debugger` statements to be removed. This can be done using `esbuild's` [drop](https://esbuild.github.io/api/#drop) option :
+
+    ```json
+    {
+      "eslint": {
+        "loader": {
+          ".png": "dataurl",
+          ".svg": "text"
+        },
+        "drop": ["console", "debugger"]
+      }
+    }
+    ```
+
+  > Please note that [cm4all-wp-bundle](https://github.com/IONOS-WordPress/cm4all-wp-bundle) already need to preconfigure some esbuild options to get your sources correctly transformed. So it might be that case that you override preconfigured options using the `cm4all-wp-bundle` JSON Schema configuration. Use can use the bundlers `verbose` options esbuild options get computed by `cm4all-wp-bundle`.
+
+  _You can provide [esbuild](https://esbuild.github.io/api/#build-api) any of it's configuration options using the `"esbuild"` property._
+
+#### Editing/Validation support
+
+You can get editing/validation support for your file based `cm4all-wp-bundle` JSON Schema configuration. Create a new JSON file with following contents:
+
+```json
+{
+  "$schema": "https://github.com/IONOS-WordPress/cm4all-wp-bundle/blob/develop/bundle-configuration.schema.json"
+}
+```
+
+_If you've installed the `cm4all-wp-bundle` NPM package you can also reference the locally installed JSON schema file contained in the package (a lot of JSON Schema supporting editor alternatives to VSCode is available online)._
+
+Voilà - VSCode (and any other Schema aware editor) provides you autocompletion, documentation and so on.
 
 ## Javascript API
 
-@TODO:
+The JavaScript API of this package let's you integrate the bundler into custom JavaScript build scripts.
+
+The package exports a single function [`async bundle(options)`](https://github.com/IONOS-WordPress/cm4all-wp-bundle/blob/develop/src/cm4all-wp-bundle.js) exposing the bundler.
+
+Example (see [tests](https://github.com/IONOS-WordPress/cm4all-wp-bundle/blob/develop/test/test-in-browser.js) for real live usage) :
+
+```js
+...
+await bundle({
+  mode: 'development',
+  entryPoints: ['./test/fixtures/wordpress/mylib.js', './test/fixtures/wordpress/figure.js'],
+  wordpress: {
+    mappings: {
+      './mylib.js': 'window.my.lib',
+    },
+  },
+  outdir: './test/fixtures/wordpress/build',
+});
+...
+```
+
+The options argument has the same shape as esbuild's [`build/buildSync(...)`](https://esbuild.github.io/api/#build-api) function.
+
+Please refer to [esbuild's build `options` documentation](https://esbuild.github.io/api/#simple-options) to see all available options.
