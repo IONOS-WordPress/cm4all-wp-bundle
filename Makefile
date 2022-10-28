@@ -115,6 +115,7 @@ docker-image: package.json docker/%.tgz .npmrc
 > LINUX_DIST=bullseye-slim
 > export DOCKER_SCAN_SUGGEST=false 
 > export DOCKER_BUILDKIT=1
+# image labels : see https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
 > docker build \
 > 	--progress=plain \
 > 	--build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST \
