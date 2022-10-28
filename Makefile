@@ -139,7 +139,8 @@ docker-image: package.json docker/%.tgz .npmrc
 #HELP: * push docker image to docker hub\n  (docker login using token or password required before)
 docker-image-push: docker-image 
 # > docker login --username [username] and docker access-token or real password must be initially before push
-> docker push --all-tags $(DOCKER_IMAGE)
+> docker push $(DOCKER_IMAGE):latest
+> docker push $(DOCKER_IMAGE):$$(jq -r '.version | values' package.json)
 
 .PHONY: docker-image-deploy
 #HELP: * update README and description of docker image at docker hub
