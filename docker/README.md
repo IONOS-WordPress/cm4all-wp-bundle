@@ -1,6 +1,16 @@
-# Usage
+# General
 
-@TODO:
+This image is a prebundled version of NPM package [`cm4all-wp-bundle`](https://www.npmjs.com/package/cm4all-wp-bundle) usable without all the hassle of providing the right NodeJS version on your system and so on.
+
+[`cm4all-wp-bundle`](https://www.npmjs.com/package/cm4all-wp-bundle) is a specialized JS/CSS bundler for transpiling JS/CSS code targeting the [WordPress](https://make.wordpress.org/)/[Gutenberg](https://wordpress.org/gutenberg/) environment.
+
+see https://github.com/IONOS-WordPress/cm4all-wp-bundle for more details.
+
+## Target audience
+
+If you are developing Javascript/CSS for the [WordPress](https://make.wordpress.org/)/[Gutenberg](https://wordpress.org/gutenberg/) Ecosystem like [Wordpress plugins/themes](https://wordpress.org/plugins/) or [WordPress blocks](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-blocks/) this image will give you the opportunity to much faster build times and less project dependencies.
+
+# Usage
 
 You can use the image to transpile your [WordPress](https://make.wordpress.org/)/[Gutenberg](https://wordpress.org/gutenberg/) sources using
 
@@ -37,6 +47,6 @@ executed using `docker-compose run --rm cm4all-wp-bundle`
 
 # Configuration
 
-See https://github.com/IONOS-WordPress/cm4all-wp-bundle#configuration
+Head over to https://github.com/IONOS-WordPress/cm4all-wp-bundle#configuration for all configuration options.
 
-@TODO: example how to provide config to the docker image
+NPM package ["`cm4all-wp-bundle`"](https://www.npmjs.com/package/cm4all-wp-bundle) contains also examples using this docker image with various configuration options.

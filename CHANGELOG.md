@@ -1,5 +1,19 @@
 # cm4all-wp-bundle
 
+## 1.0.3
+
+### Patch Changes
+
+- 8517fcd: linter support support.
+
+  - `make lint` will check source files
+
+  - `make lint-fix` will fix errors in source files where possible
+
+  vscode integration is included.
+
+- 733f39c: add documentation for the package and the docker image
+
 ## 1.0.2
 
 ### Patch Changes

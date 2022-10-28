@@ -1,6 +1,6 @@
 {
   "name": "cm4all-wp-bundle",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A nano-sized high performance js/css resource bundler targeting WordPress Gutenberg. Minimal dependencies. Made with esbuild ❤️.",
   "main": "index.js",
   "engines": {
