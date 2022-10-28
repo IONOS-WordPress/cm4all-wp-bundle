@@ -124,6 +124,7 @@ docker-image: package.json docker/%.tgz .npmrc
 > 	--label "org.opencontainers.image.title=$(DOCKER_IMAGE)" \
 > 	--label "org.opencontainers.image.description=$$(jq -r '.description | values' package.json)" \
 > 	--label "org.opencontainers.image.authors=$$PACKAGE_AUTHOR" \
+>		--label "org.opencontainers.image.source=$$(jq -r '.repository.url | values' package.json)" \
 > 	--label "org.opencontainers.image.url=$$(jq -r '.homepage | values' package.json)" \
 > 	--label "org.opencontainers.image.vendor=https://cm4all.com" \
 > 	--label "org.opencontainers.image.licenses=$$(jq -r '.license | values' package.json)" \
@@ -153,7 +154,7 @@ docker-image-deploy: docker-image-push
 # see https://stackoverflow.com/a/48470227/1554103
 > jq -n \
 >   --arg description "$$DESCRIPTION" \
->   --arg full_description "$$(<./README.md)" \
+>   --arg full_description "$$(<./docker/README.md)" \
 > 	'{description: $$description, full_description: $$full_description}' \
 >	| curl -s --show-error \
 > 	-H "Content-Type: application/json" \

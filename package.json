@@ -47,6 +47,10 @@
     "lodash.merge": "4.6.2",
     "sass": "^1.55.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IONOS-WordPress/cm4all-wp-bundle"
+  },
   "peerDependencies": {
     "@wordpress/element": "^4.17.0",
     "@wordpress/icons": "^9.10.0",
