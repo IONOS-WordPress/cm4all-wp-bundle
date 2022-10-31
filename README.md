@@ -218,7 +218,7 @@ You can provide the advanced configuration
 
 ### Advanced JSON Schema structure
 
-The JSON provided via STDIN must match the `cm4all-wp-bundle` JSON Schema (can be found here : [bundle-configuration.schema.json](blob/develop/bundle-configuration.schema.json)).
+The JSON provided via STDIN must match the `cm4all-wp-bundle` JSON Schema (can be found here : [bundle-configuration.schema.json](https://github.com/IONOS-WordPress/cm4all-wp-bundle/blob/develop/bundle-configuration.schema.json)).
 
 The `cm4all-wp-bundle` JSON Schema declares 3 top level properties :
 
