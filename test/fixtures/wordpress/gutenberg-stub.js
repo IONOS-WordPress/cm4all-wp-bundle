@@ -29,7 +29,7 @@ export * as keycodes from '@wordpress/keycodes';
 export * as mediaUtils from '@wordpress/media-utils';
 export * as notices from '@wordpress/notices';
 export * as plugins from '@wordpress/plugins';
-export * as references from '@wordpress/preferences';
+export * as preferences from '@wordpress/preferences';
 export * as preferencesPersistence from '@wordpress/preferences-persistence';
 export * as primitives from '@wordpress/primitives';
 export * as priorityQueue from '@wordpress/priority-queue';

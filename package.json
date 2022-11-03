@@ -43,7 +43,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "esbuild": "^0.15.10",
+    "esbuild": "^0.15.13",
     "lodash.merge": "4.6.2",
     "sass": "^1.55.0"
   },
@@ -71,6 +71,7 @@
     "@wordpress/format-library": "3.16.0",
     "@wordpress/media-utils": "4.9.0",
     "@wordpress/plugins": "4.16.0",
+    "@wordpress/preferences": "2.13.0",
     "@wordpress/preferences-persistence": "1.10.0",
     "eslint": "8.26.0",
     "eslint-config-prettier": "8.5.0",

@@ -38,8 +38,6 @@ const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   '@wordpress/media-utils': 'window.wp.mediaUtils',
   '@wordpress/notices': 'window.wp.notices',
   '@wordpress/plugins': 'window.wp.plugins',
-  '@wordpress/preferences': 'window.wp.preferences',
-  '@wordpress/preferences-persistence': 'window.wp.preferencesPersistence',
   '@wordpress/primitives': 'window.wp.primitives',
   '@wordpress/priority-queue': 'window.wp.priorityQueue',
   '@wordpress/reusable-blocks': 'window.wp.reusableBlocks',
@@ -53,6 +51,8 @@ const DEFAULT_WORDPRESS_GLOBAL_MAPPINGS = {
   '@wordpress/wordcount': 'window.wp.wordcount',
   react: 'window.React',
   'react-dom': 'window.ReactDom',
+  '@wordpress/preferences': 'window.wp.preferences',
+  '@wordpress/preferences-persistence': 'window.wp.preferencesPersistence',
 };
 
 export default function WordpressPlugin(options = {}) {
