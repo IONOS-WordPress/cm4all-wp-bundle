@@ -279,7 +279,7 @@ The `cm4all-wp-bundle` JSON Schema declares 3 top level properties :
 
   _You can provide Sass any configuration property as stated in the [Sass compiler documentation](https://sass-lang.com/documentation/js-api)._
 
-- `"eslint" : { ... }`
+- `"esbuild" : { ... }`
 
   Using this property it's possible to customize the `esbuild's` transpilation process.
 
@@ -305,7 +305,7 @@ The `cm4all-wp-bundle` JSON Schema declares 3 top level properties :
 
     ```json
     {
-      "eslint": {
+      "esbuild": {
         "loader": {
           ".png": "dataurl",
           ".svg": "text"
@@ -318,7 +318,7 @@ The `cm4all-wp-bundle` JSON Schema declares 3 top level properties :
 
     ```json
     {
-      "eslint": {
+      "esbuild": {
         "loader": {
           ".png": "dataurl",
           ".svg": "text"
