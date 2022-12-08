@@ -139,7 +139,7 @@ docker-image: package.json docker/%.tgz .npmrc
 .PHONY: docker-image-push
 #HELP: * push docker image to docker hub\n  (docker login using token or password required before)
 docker-image-push: docker-image 
-# > docker login --username [username] and docker access-token or real password must be initially before push
+> echo "$$DOCKER_TOKEN" | docker login --username "$$DOCKER_USER" --password-stdin
 > docker push $(DOCKER_IMAGE):latest
 > docker push $(DOCKER_IMAGE):$$(jq -r '.version | values' package.json)
 
@@ -147,8 +147,8 @@ docker-image-push: docker-image
 #HELP: * update README and description of docker image at docker hub
 docker-image-deploy: docker-image-push
 # > cat ~/my_password.txt | docker login --username foo --password-stdin
-# > docker login --username='$(DOCKER_USER)' --password='$(DOCKER_PASS)' $${DOCKER_HOST:-}
-> LOGIN_PAYLOAD=$$(printf '{"username": "%s", "password": "%s" }' "$$DOCKER_USER" "$$DOCKER_PASS")
+# > docker login --username='$(DOCKER_USER)' --password='$(DOCKER_TOKEN)' $${DOCKER_HOST:-}
+> LOGIN_PAYLOAD=$$(printf '{"username": "%s", "password": "%s" }' "$$DOCKER_USER" "$$DOCKER_TOKEN")
 > TOKEN=$$(curl -s --show-error  -H "Content-Type: application/json" -X POST -d "$$LOGIN_PAYLOAD" https://hub.docker.com/v2/users/login/ | jq --exit-status -r .token)
 # GET : > curl -v -H "Authorization: JWT $${TOKEN}" "https://hub.docker.com/v2/repositories/$(DOCKER_IMAGE)/"
 > DESCRIPTION=$$(docker image inspect --format='' $(DOCKER_IMAGE):latest | jq -r '.[0].Config.Labels["org.opencontainers.image.description"] | values')
