@@ -15,7 +15,7 @@
     "test:start": "./bin/cm4all-wp-bundle-cli.js --verbose --outdir=./dist --mode=development --wordpress.mappings[\"./mylib.js\"]=window.my.lib ./test/fixtures/wordpress/mylib.js ./test/fixtures/wordpress/figure.js",
     "start": "./bin/cm4all-wp-bundle-cli.js",
     "debug": "NODE_NO_WARNINGS=1 ndb npm run --",
-    "check-updates": "pnpm update --interactive"
+    "check-updates": "pnpm update --interactive --latest"
   },
   "homepage": "https://github.com/IONOS-WordPress/cm4all-wp-bundle",
   "files": [
