@@ -1,5 +1,13 @@
 # cm4all-wp-bundle
 
+## 1.0.5
+
+### Patch Changes
+
+- ea0b053: Thanks to @motzke : fixed usage as NodeJS module
+  see https://github.com/IONOS-WordPress/cm4all-wp-bundle/pull/1
+- a259197: updated dependencies
+
 ## 1.0.4
 
 ### Patch Changes
