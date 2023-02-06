@@ -1,5 +1,14 @@
 # cm4all-wp-bundle
 
+## 1.0.6
+
+### Patch Changes
+
+- updated dependencies
+
+  - esbuild
+  - sass
+
 ## 1.0.5
 
 ### Patch Changes

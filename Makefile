@@ -57,7 +57,7 @@ PNPM != which pnpm
 
 NODE_VERSION != sed -n '/^use-node-version=/ {s///p;q;}' .npmrc
 NODE := $(HOME)/.local/share/pnpm/nodejs/$(NODE_VERSION)/bin/node 
-ESBUILD := node_modules/.bin/esbuild
+ESBUILD := pnpm exec esbuild
 
 DOCKER_IMAGE := lgersman/$(shell jq -r '.name | values' package.json)
 
@@ -89,7 +89,7 @@ build: node_modules $(NODE)
 
 docker/%.tgz : $(src/%) package.json LICENSE.md README.md 
 # delete older tgz files to prevent adding them to the docker image (see Dockerfile)
-> rm ./docker/*.tgz
+> rm -f ./docker/*.tgz
 # unfortunately we cannot use pnpm deploy since this action requires pnpm workspaces enabled 
 # > TGZ=$$($(PNPM) pack --pack-destination ./docker) && tar -xvf ./docker/$$TGZ --directory ./docker
 > $(PNPM) pack --pack-destination ./docker
@@ -117,6 +117,7 @@ docker-image: package.json docker/%.tgz .npmrc
 > export DOCKER_BUILDKIT=1
 # image labels : see https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
 > docker build \
+>		--no-cache \
 > 	--progress=plain \
 > 	--build-arg nodejs_base=$$NODEJS_VERSION-$$LINUX_DIST \
 >		-t $(DOCKER_IMAGE):latest \
@@ -213,7 +214,7 @@ impex-js : $(SCRIPT_TARGETS)
 # > echo '{ "wordpress" : { "mappings" : { "@cm4all-impex/debug" : "wp.impex.debug", "@cm4all-impex/store" : "wp.impex.store", "@cm4all-impex/filters" : "wp.impex.filters", "React": "window.React" } }}' | docker run -i --rm -v /home/lgersman/workspace/cm4all-wp-impex:/app $(DOCKER_IMAGE):latest --verbose --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $(patsubst /home/lgersman/workspace/cm4all-wp-impex/%,%, $<)
 
 test/fixtures/wordpress/build/gutenberg-stub.js : test/fixtures/wordpress/gutenberg-stub.js node_modules 
-> $(ESBUILD) $< --bundle --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
+> $(ESBUILD) $< --bundle --analyze --metafile=meta.json --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
 > touch -m $<
 
 .PHONY: test 

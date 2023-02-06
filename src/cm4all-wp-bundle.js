@@ -74,7 +74,11 @@ export default async function bundle(options) {
     };
   }
 
-  const result = await esbuild.build(esbuild_options);
+  const watch = esbuild_options.watch;
+  delete esbuild_options.watch;
+
+  const context = await esbuild.context(esbuild_options);
+  const result = await context.rebuild(esbuild_options);
 
   if (options.analyze) {
     const statistics = await esbuild.analyzeMetafile(result.metafile, {
@@ -83,5 +87,12 @@ export default async function bundle(options) {
 
     console.log(statistics);
   }
+
+  if (watch) {
+    await context.watch();
+  } else {
+    context.dispose();
+  }
+
   return result;
 }
