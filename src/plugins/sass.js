@@ -1,4 +1,4 @@
-import sass from 'sass';
+import * as sass from 'sass';
 import { resolve, dirname } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

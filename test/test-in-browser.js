@@ -10,7 +10,13 @@ describe('test in browser', () => {
 
   let browser, page;
 
-  before(async () => (browser = await chromium.launch()));
+  before(
+    async () =>
+      (browser = await chromium.launch({
+        // args: ['--disable-web-security'],
+        // bypassCSP: true,
+      })),
+  );
   after(async () => await browser.close());
   beforeEach(async () => {
     page = await browser.newPage();
