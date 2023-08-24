@@ -1,5 +1,5 @@
 import * as sass from 'sass';
-import { resolve, dirname } from 'node:path';
+import { resolve, dirname, extname } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -21,10 +21,23 @@ export default function SassPlugin(options = {}) {
   return {
     name,
     setup(build) {
-      build.onResolve({ filter: /\.scss$/ }, (args) => ({
-        path: resolve(args.resolveDir, args.path),
-        namespace: name,
-      }));
+      build.onResolve({ filter: /\.(scss|svg)$/ }, (args) => {
+        switch (extname(args.path)) {
+          case ".scss":
+            return {
+              path: resolve(args.resolveDir, args.path),
+              namespace: name
+            };
+            break;
+          case ".svg":
+            return {
+              path: args.path,
+              namespace: name,
+              external: true,
+            };
+            break;
+        }
+      });
       build.onLoad({ filter: /.*/, namespace: name }, (args) => {
         const esbuildOptions = build.initialOptions;
 
