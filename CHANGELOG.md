@@ -1,5 +1,13 @@
 # cm4all-wp-bundle
 
+## 1.0.8
+
+- #8394cec fix: integrated support for importing svg in js/css files
+
+## 1.0.7
+
+- fixed a security vulnerability
+
 ## 1.0.6
 
 ### Patch Changes
