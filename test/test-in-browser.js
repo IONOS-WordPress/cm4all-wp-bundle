@@ -13,6 +13,7 @@ describe('test in browser', () => {
   before(
     async () =>
       (browser = await chromium.launch({
+        // headless: false,
         // args: ['--disable-web-security'],
         // bypassCSP: true,
       })),
@@ -57,7 +58,6 @@ describe('test in browser', () => {
       path: './test/fixtures/wordpress/build/mylib.js',
     });
     assert(await page.evaluate(async () => typeof window.my.lib === 'object'), 'window.my.lib exists');
-
     assert(
       await page.evaluate(async () => window.wp.figure === undefined),
       'window.wp.figure is undefined before adding the script',

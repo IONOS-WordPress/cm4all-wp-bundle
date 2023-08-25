@@ -14,6 +14,7 @@ export default async function bundle(options) {
     loader: {
       '.mjs': 'jsx',
       '.js': 'jsx',
+      '.svg': 'text',
     },
     platform: 'browser',
 

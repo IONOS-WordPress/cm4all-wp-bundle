@@ -1,5 +1,5 @@
 import * as sass from 'sass';
-import { resolve, dirname } from 'node:path';
+import { resolve, dirname, extname } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -21,12 +21,35 @@ export default function SassPlugin(options = {}) {
   return {
     name,
     setup(build) {
-      build.onResolve({ filter: /\.scss$/ }, (args) => ({
-        path: resolve(args.resolveDir, args.path),
-        namespace: name,
-      }));
+      build.onResolve({ filter: /\.(scss|svg)$/ }, (args) => {
+        switch (extname(args.path)) {
+          case '.scss':
+            return {
+              path: resolve(args.resolveDir, args.path),
+              namespace: name,
+            };
+            break;
+          case '.svg':
+            // handle only svgs imported by scss and css files
+            if (/\.s?css$/.test(args.importer)) {
+              return {
+                path: resolve(dirname(args.importer), args.path),
+                namespace: name,
+              };
+            }
+            break;
+        }
+      });
       build.onLoad({ filter: /.*/, namespace: name }, (args) => {
+        debugger;
         const esbuildOptions = build.initialOptions;
+
+        if (args.path.endsWith('.svg')) {
+          return {
+            contents: readFileSync(args.path).toString(),
+            loader: 'dataurl',
+          };
+        }
 
         /*
          * Please note that Sass options "sourceMap" and "sourceMapIncludeSources"

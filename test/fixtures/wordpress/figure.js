@@ -11,6 +11,9 @@ import * as mylib from './mylib.js';
 
 import { foo, bar } from './mylib.js';
 
+import Circle from './circle.svg';
+console.log(Circle);
+
 import FigCaption from './figcaption.js';
 
 import * as Paragraph from './paragraph.js';
