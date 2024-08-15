@@ -41,7 +41,6 @@ export default function SassPlugin(options = {}) {
         }
       });
       build.onLoad({ filter: /.*/, namespace: name }, (args) => {
-        debugger;
         const esbuildOptions = build.initialOptions;
 
         if (args.path.endsWith('.svg')) {

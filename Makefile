@@ -43,10 +43,10 @@ See more here : https://docs.npmjs.com/getting-started/installing-node
 endif
 
 # ensure a recent nodejs version is available
-ifeq (,$(shell which nodejs))
+ifeq (,$(shell pnpm exec node --version))
 	define NODEJS_NOT_FOUND
-node is not installed or not in PATH. 
-See more here : https://nodejs.org/en/download/ 
+node is not properly conficured/installed in pnpm
+See more here : https://pnpm.io/npmrc#nodejs-settings
 	endef
 	$(error $(NODEJS_NOT_FOUND))
 endif
@@ -214,12 +214,33 @@ impex-js : $(SCRIPT_TARGETS)
 # > echo '{ "wordpress" : { "mappings" : { "@cm4all-impex/debug" : "wp.impex.debug", "@cm4all-impex/store" : "wp.impex.store", "@cm4all-impex/filters" : "wp.impex.filters", "React": "window.React" } }}' | docker run -i --rm -v /home/lgersman/workspace/cm4all-wp-impex:/app $(DOCKER_IMAGE):latest --verbose --global-name='$($@_GLOBAL_NAME)' --mode=development --outdir=plugins/cm4all-wp-impex/dist $(patsubst /home/lgersman/workspace/cm4all-wp-impex/%,%, $<)
 
 test/fixtures/wordpress/build/gutenberg-stub.js : test/fixtures/wordpress/gutenberg-stub.js node_modules 
-> $(ESBUILD) $< --bundle --analyze --metafile=meta.json --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
+> # we pipe through jq to make errors in json config visible
+> cat << EOF | jq -e | $(ESBUILD) $< --bundle --analyze --metafile=$$(basename $<)on --target=esnext --global-name=wp --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --define:process.env.IS_GUTENBERG_PLUGIN=true --outfile=$@
+> { 
+>	  "wordpress" : { 
+>      "mappings" : { 
+>        "React": "window.React"
+>      }
+>	  }
+> }
+> touch -m $<
+
+test/fixtures/wordpress/build/react-stub.js : test/fixtures/wordpress/react-stub.js node_modules
+> # we pipe through jq to make errors in json config visible
+> cat << EOF | jq -e | $(ESBUILD) $< --bundle --analyze --metafile=$$(basename $<)on --target=esnext --loader:.js=jsx --define:global=window --define:process.env.NODE_ENV=\"development\" --outfile=$@
+> { 
+>	  "wordpress" : { 
+>      "mappings" : { 
+>        "React": "window.React",
+>      }
+>	  }
+> }
+> EOF
 > touch -m $<
 
 .PHONY: test 
 #HELP: * run test suite
-test: node_modules $(NODE) test/fixtures/wordpress/build/gutenberg-stub.js
+test: node_modules $(NODE) test/fixtures/wordpress/build/gutenberg-stub.js test/fixtures/wordpress/build/react-stub.js
 > $(PNPM) test
 
 .PHONY: clean

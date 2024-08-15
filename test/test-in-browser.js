@@ -13,9 +13,9 @@ describe('test in browser', () => {
   before(
     async () =>
       (browser = await chromium.launch({
-        // headless: false,
-        // args: ['--disable-web-security'],
-        // bypassCSP: true,
+        headless: false,
+        args: ['--disable-web-security'],
+        bypassCSP: true,
       })),
   );
   after(async () => await browser.close());
@@ -37,6 +37,15 @@ describe('test in browser', () => {
   });
 
   it('injecting react in page template works', async () => {
+    assert(await page.evaluate(async () => typeof window.React === 'object'), 'window.React exists');
+
+    assert(
+      await page.evaluate(async () => typeof window.React.createElement === 'function'),
+      'window.React.createElement is a function',
+    );
+  });
+
+  it('injecting gutenberg-stub in page template works', async () => {
     assert(await page.evaluate(async () => typeof window.wp === 'object'), 'window.wp exists');
 
     assert(await page.evaluate(async () => typeof window.wp.components === 'object'), 'window.wp.components exists');
